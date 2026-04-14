@@ -45,6 +45,15 @@ export const solprintTheme: ThemeOptions = deepmerge(defaultLightTheme, {
     },
 
     components: {
+        MuiListItemIcon: {
+            styleOverrides: {
+                root: {
+                    color: 'inherit !important',
+                    minWidth: 32,
+                },
+            },
+        },
+
         MuiAppBar: {
             styleOverrides: {
                 root: {
@@ -56,18 +65,30 @@ export const solprintTheme: ThemeOptions = deepmerge(defaultLightTheme, {
             },
         },
 
-        //
-        //  SIDEBAR NEGRA
-        //
+        // ==================== SIDEBAR NEGRA ====================
         RaSidebar: {
             styleOverrides: {
                 root: {
                     backgroundColor: '#0b0e17 !important',
                 },
+                fixed: {
+                    height: '100vh !important',
+                    minHeight: '100vh !important',
+                    position: 'sticky',
+                    top: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    zIndex: 1200,
+                },
                 paper: {
                     backgroundColor: '#0b0e17 !important',
-                    color: '#7a8aa8',
+                    color: '#7a8aa8 !important',
                     borderRight: 'none',
+                    height: '100vh !important',
+                    minHeight: '100vh !important',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    overflowY: 'auto',
                 },
             },
         },
@@ -76,19 +97,35 @@ export const solprintTheme: ThemeOptions = deepmerge(defaultLightTheme, {
             styleOverrides: {
                 paper: {
                     backgroundColor: '#0b0e17 !important',
-                    color: '#7a8aa8',
+                    color: '#7a8aa8 !important',
                     borderRight: 'none',
+                    height: '100vh !important',
+                    minHeight: '100vh !important',
+                    display: 'flex',
+                    flexDirection: 'column',
                 },
             },
         },
 
-        //
-        //  ITEM ACTIVO DEL MENÚ (RaMenuItemLink)
-        //
+        RaLayout: {
+            styleOverrides: {
+                root: {
+                    '& .RaSidebar-fixed': {
+                        backgroundColor: '#0b0e17 !important',
+                        height: '100% !important',
+                        minHeight: '100vh !important',
+                        display: 'flex',
+                        flexDirection: 'column',
+                    },
+                },
+            },
+        },
+
+        // ITEM ACTIVO DEL MENÚ
         RaMenuItemLink: {
             styleOverrides: {
                 root: {
-                    '&.RaMenuItemLink-active': {
+                    '&.RaMenuItemLink-active, &.Mui-selected': {
                         backgroundColor: 'rgba(245, 158, 11, 0.12)',
                         borderLeft: '3px solid #f59e0b',
                         color: '#f59e0b',
@@ -100,8 +137,18 @@ export const solprintTheme: ThemeOptions = deepmerge(defaultLightTheme, {
                         },
 
                         '& .MuiListItemIcon-root': {
-                            color: '#f59e0b',
+                            color: '#f59e0b !important',
                         },
+                    },
+                },
+            },
+        },
+
+        RaDashboardMenuItem: {
+            styleOverrides: {
+                root: {
+                    '& .MuiListItemIcon-root': {
+                        color: 'inherit !important',
                     },
                 },
             },
@@ -143,7 +190,7 @@ export const solprintTheme: ThemeOptions = deepmerge(defaultLightTheme, {
 
 //
 // ─────────────────────────────────────────────────────────────
-//   TEMA OSCURO — sidebar CLARA
+//   TEMA OSCURO — igual que el claro, pero con colores oscuros
 // ─────────────────────────────────────────────────────────────
 //
 export const solprintDarkTheme: ThemeOptions = deepmerge(defaultDarkTheme, {
@@ -165,7 +212,28 @@ export const solprintDarkTheme: ThemeOptions = deepmerge(defaultDarkTheme, {
         divider: '#1e2937',
     },
 
+    typography: {
+        fontFamily: "'DM Sans', system-ui, sans-serif",
+        h6: { fontWeight: 600 },
+        body1: { fontSize: '13.5px' },
+        button: { fontWeight: 600, textTransform: 'none' },
+    },
+
+    sidebar: {
+        width: 262,
+        closedWidth: 52,
+    },
+
     components: {
+        MuiListItemIcon: {
+            styleOverrides: {
+                root: {
+                    color: 'inherit !important',
+                    minWidth: 32,
+                },
+            },
+        },
+
         MuiAppBar: {
             styleOverrides: {
                 root: {
@@ -175,18 +243,30 @@ export const solprintDarkTheme: ThemeOptions = deepmerge(defaultDarkTheme, {
             },
         },
 
-        //
-        //  SIDEBAR CLARA
-        //
+        // ==================== SIDEBAR OSCURA SUAVE ====================
         RaSidebar: {
             styleOverrides: {
                 root: {
-                    backgroundColor: '#f8fafc !important',
+                    backgroundColor: '#1a1f2b !important',
+                },
+                fixed: {
+                    height: '100vh !important',
+                    minHeight: '100vh !important',
+                    position: 'sticky',
+                    top: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    zIndex: 1200,
                 },
                 paper: {
-                    backgroundColor: '#f8fafc !important',
-                    color: '#1e293b',
+                    backgroundColor: '#1a1f2b !important',
+                    color: '#cbd5e1 !important',
                     borderRight: 'none',
+                    height: '100vh !important',
+                    minHeight: '100vh !important',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    overflowY: 'auto',
                 },
             },
         },
@@ -194,20 +274,36 @@ export const solprintDarkTheme: ThemeOptions = deepmerge(defaultDarkTheme, {
         MuiDrawer: {
             styleOverrides: {
                 paper: {
-                    backgroundColor: '#f8fafc !important',
-                    color: '#1e293b',
+                    backgroundColor: '#1a1f2b !important',
+                    color: '#cbd5e1 !important',
                     borderRight: 'none',
+                    height: '100vh !important',
+                    minHeight: '100vh !important',
+                    display: 'flex',
+                    flexDirection: 'column',
                 },
             },
         },
 
-        //
-        //  ITEM ACTIVO DEL MENÚ (RaMenuItemLink)
-        //
+        RaLayout: {
+            styleOverrides: {
+                root: {
+                    '& .RaSidebar-fixed': {
+                        backgroundColor: '#1a1f2b !important',
+                        height: '100vh !important',
+                        minHeight: '100vh !important',
+                        display: 'flex',
+                        flexDirection: 'column',
+                    },
+                },
+            },
+        },
+
+        // ITEM ACTIVO DEL MENÚ
         RaMenuItemLink: {
             styleOverrides: {
                 root: {
-                    '&.RaMenuItemLink-active': {
+                    '&.RaMenuItemLink-active, &.Mui-selected': {
                         backgroundColor: 'rgba(245, 158, 11, 0.12)',
                         borderLeft: '3px solid #f59e0b',
                         color: '#f59e0b',
@@ -219,8 +315,18 @@ export const solprintDarkTheme: ThemeOptions = deepmerge(defaultDarkTheme, {
                         },
 
                         '& .MuiListItemIcon-root': {
-                            color: '#f59e0b',
+                            color: '#f59e0b !important',
                         },
+                    },
+                },
+            },
+        },
+
+        RaDashboardMenuItem: {
+            styleOverrides: {
+                root: {
+                    '& .MuiListItemIcon-root': {
+                        color: 'inherit !important',
                     },
                 },
             },

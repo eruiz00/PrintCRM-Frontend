@@ -18,6 +18,7 @@ import WorkIcon from '@mui/icons-material/Work';
 import PeopleIcon from "@mui/icons-material/People";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 export const MyMenu = () => {
   const [openSection, setOpenSection] = useState<string | null>(null);
@@ -28,6 +29,11 @@ export const MyMenu = () => {
 
   return (
     <Menu>
+
+      {/* DASHBOARD */}
+      <List component="div" disablePadding>
+        <MenuItemLink to="/dashboard" primaryText="Dashboard" leftIcon={<DashboardIcon />} />
+      </List>
 
       {/* CONFIGURACIÓN */}
       <ListItemButton onClick={() => toggle("config")}>
