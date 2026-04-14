@@ -28,7 +28,7 @@ const i18nProvider = polyglotI18nProvider(
 const store = localStorageStore(undefined, 'PrintCRM');
 
 const App = () => {
-const [themeName] = useStore<ThemeName>('themeName', 'default');
+const [themeName] = useStore<ThemeName>('themeName', 'solprint');
 const singleTheme = themes.find(theme => theme.name === themeName)?.single;
 const lightTheme = themes.find(theme => theme.name === themeName)?.light;
 const darkTheme = themes.find(theme => theme.name === themeName)?.dark;
