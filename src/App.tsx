@@ -52,8 +52,18 @@ return (
     >
     <Resource name="presupuesto" list={presupuestoPage} />
     <Resource name="sistema" list={sistemaPage} />
-    <Resource name="tipotrabajo" list={tipoTrabajoPage} />
+    <Resource name="tipotrabajo" list={tipoTrabajoPage} recordRepresentation="tipotrabajo" />
     <Resource name="profile" list={MyProfile} />
+
+    {/* Recursos "headless" usados solo como referencias
+        desde ReferenceField / ReferenceInput */}
+    <Resource name="cliente" recordRepresentation="empresa" />
+    <Resource name="comercial" recordRepresentation="nombre" />
+    <Resource name="contactocliente" recordRepresentation="nombre" />
+    <Resource name="empleado" recordRepresentation="nombre" />
+    <Resource name="papel" recordRepresentation="papel" />
+    <Resource name="grupopapel" recordRepresentation="nombregrupo" />
+    <Resource name="gruposelecciontinta" recordRepresentation="grupo" />
     </Admin>
     );
 }
