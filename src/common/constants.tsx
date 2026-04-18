@@ -80,3 +80,57 @@ export const TIPO_ASISTENTE_PRESUPUESTO_CHOICES = [...TIPO_ASISTENTE_PRESUPUESTO
 
 export const TIPO_ASISTENTE_PRESUPUESTO_MAP: Record<number, string> =
   Object.fromEntries(TIPO_ASISTENTE_PRESUPUESTO.map((a) => [a.id, a.name]));
+
+/////////////////////////////////////////////////////////////
+// ESTADO CIVIL
+// (empleado.estadocivil es int; ids asumidos — ajustar si
+//  el backend usa valores distintos)
+export const ESTADO_CIVIL = [
+  { id: 0, name: "enums.estado_civil.no_definido" },
+  { id: 1, name: "enums.estado_civil.soltero" },
+  { id: 2, name: "enums.estado_civil.casado" },
+  { id: 3, name: "enums.estado_civil.divorciado" },
+  { id: 4, name: "enums.estado_civil.viudo" },
+  { id: 5, name: "enums.estado_civil.pareja_hecho" },
+] as const;
+export const ESTADO_CIVIL_MAP: Record<number, string> =
+  Object.fromEntries(ESTADO_CIVIL.map((e) => [e.id, e.name]));
+
+/////////////////////////////////////////////////////////////
+// SEXO
+// (empleado.sexo es int; ids asumidos)
+export const SEXO = [
+  { id: 0, name: "enums.sexo.no_definido" },
+  { id: 1, name: "enums.sexo.hombre" },
+  { id: 2, name: "enums.sexo.mujer" },
+  { id: 3, name: "enums.sexo.otro" },
+] as const;
+export const SEXO_MAP: Record<number, string> =
+  Object.fromEntries(SEXO.map((s) => [s.id, s.name]));
+
+/////////////////////////////////////////////////////////////
+// ÁREA EMPLEADO
+// Mapea el enum TSI RSConstDBAreaEmpleado (índices 0..14):
+//   0 vacío, 1 Administración, 2 Atención Cliente, 3 Recepción,
+//   4 Limpieza, 5 Vigilancia, 6 Impresión, 7 Pre-Impresión,
+//   8 Post-Impresión, 9 Mantenimiento, 10 Informática,
+//   11 Transportes, 12 Almacén, 13 Producción, 14 Otros.
+export const AREA_EMPLEADO = [
+  { id: 0, name: "enums.area_empleado.no_definido" },
+  { id: 1, name: "enums.area_empleado.administracion" },
+  { id: 2, name: "enums.area_empleado.atencion_cliente" },
+  { id: 3, name: "enums.area_empleado.recepcion" },
+  { id: 4, name: "enums.area_empleado.limpieza" },
+  { id: 5, name: "enums.area_empleado.vigilancia" },
+  { id: 6, name: "enums.area_empleado.impresion" },
+  { id: 7, name: "enums.area_empleado.preimpresion" },
+  { id: 8, name: "enums.area_empleado.postimpresion" },
+  { id: 9, name: "enums.area_empleado.mantenimiento" },
+  { id: 10, name: "enums.area_empleado.informatica" },
+  { id: 11, name: "enums.area_empleado.transportes" },
+  { id: 12, name: "enums.area_empleado.almacen" },
+  { id: 13, name: "enums.area_empleado.produccion" },
+  { id: 14, name: "enums.area_empleado.otros" },
+] as const;
+export const AREA_EMPLEADO_MAP: Record<number, string> =
+  Object.fromEntries(AREA_EMPLEADO.map((a) => [a.id, a.name]));

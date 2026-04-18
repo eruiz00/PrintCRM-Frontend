@@ -46,10 +46,54 @@ export const authProvider: AuthProvider = {
     },
 
     getIdentity: () => {
-        return Promise.resolve({
-            id: "user",
-            fullName: "Usuario",
-        });
+        const token = localStorage.getItem("token");
+        if (!token) {
+            return Promise.reject();
+        }
+        try {
+            // Decodifica el payload del JWT (parte central, base64-url)
+            const base64 = token
+                .split(".")[1]
+                .replace(/-/g, "+")
+                .replace(/_/g, "/");
+            const json = decodeURIComponent(
+                atob(base64)
+                    .split("")
+                    .map((c) => "%" + c.charCodeAt(0).toString(16).padStart(2, "0"))
+                    .join("")
+            );
+            const payload: any = JSON.parse(json);
+
+            // El backend mete el id del empleado en `usuario` (ver JWT emitido
+            // por /login). Probamos varias convenciones por robustez.
+            const id =
+                payload.empleadoid ??
+                payload.empleado_id ??
+                payload.id ??
+                payload.usuario ??
+                payload.user_id ??
+                payload.uid ??
+                "user";
+
+            // El username va normalmente en `sub`.
+            const username = payload.username ?? payload.sub;
+
+            const fullName =
+                payload.nombre ??
+                payload.fullName ??
+                payload.name ??
+                username ??
+                "Usuario";
+
+            return Promise.resolve({
+                id,
+                fullName,
+                username,
+                sistema: payload.sistema ?? payload.sistemaid,
+            });
+        } catch {
+            return Promise.resolve({ id: "user", fullName: "Usuario" });
+        }
     },
 
     getPermissions: () => Promise.resolve(),
