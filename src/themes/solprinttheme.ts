@@ -22,14 +22,14 @@ export const solprintTheme: ThemeOptions = deepmerge(defaultLightTheme, {
             contrastText: '#f1f5f9',
         },
         background: {
-            default: '#f0f2f6',
+            default: '#e6eaf2',
             paper: '#ffffff',
         },
         text: {
             primary: '#0d1117',
-            secondary: '#3a4558',
+            secondary: '#27364d',
         },
-        divider: '#e2e6ed',
+        divider: '#b7c1d1',
     },
 
     typography: {
@@ -154,14 +154,51 @@ export const solprintTheme: ThemeOptions = deepmerge(defaultLightTheme, {
             },
         },
 
+        // Inputs "filled" (react-admin TextInput / NumberInput / SelectInput…).
+        // Usamos box-shadow inset (NO border) para no cambiar la altura
+        // del control y no descolocar la label flotante.
         MuiFilledInput: {
             styleOverrides: {
                 root: {
-                    backgroundColor: '#f8fafc',
-                    '&:hover': { backgroundColor: '#f1f5f9' },
+                    backgroundColor: '#ffffff',
+                    borderRadius: 6,
+                    boxShadow: 'inset 0 0 0 1px #94a3b8',
+                    transition:
+                        'background-color 120ms ease, box-shadow 120ms ease',
+                    '&:hover': {
+                        backgroundColor: '#f4f6fa',
+                        boxShadow: 'inset 0 0 0 1px #64748b',
+                    },
                     '&.Mui-focused': {
                         backgroundColor: '#ffffff',
+                        boxShadow: 'inset 0 0 0 2px #f59e0b',
+                    },
+                    '&.Mui-error': {
+                        boxShadow: 'inset 0 0 0 1px #dc2626',
+                    },
+                    // Quita la barra inferior "underline" de la variante filled
+                    '&:before, &:after': { display: 'none' },
+                },
+            },
+        },
+
+        // Inputs "outlined" (MUI TextField con variant="outlined",
+        // como el buscador del modal de papel). Tocamos sólo el color
+        // del notchedOutline y el radio; el border lo pinta el propio
+        // fieldset, así que no altera el tamaño.
+        MuiOutlinedInput: {
+            styleOverrides: {
+                root: {
+                    borderRadius: 6,
+                    '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#94a3b8',
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#64748b',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                         borderColor: '#f59e0b',
+                        borderWidth: 2,
                     },
                 },
             },
@@ -184,6 +221,25 @@ export const solprintTheme: ThemeOptions = deepmerge(defaultLightTheme, {
                 },
             },
         },
+
+        // Fondo grisáceo para el Datagrid (listas de presupuestos, sistemas…)
+        RaDatagrid: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: '#f4f6f9',
+                },
+            },
+        },
+
+        // Línea entre filas muy fina y apenas perceptible.
+        // Sólo tocamos el color; el grosor (1px solid) lo aplica MUI.
+        MuiTableCell: {
+            styleOverrides: {
+                body: {
+                    borderBottomColor: '#e4e7ec',
+                },
+            },
+        },
     },
 });
 
@@ -203,13 +259,13 @@ export const solprintDarkTheme: ThemeOptions = deepmerge(defaultDarkTheme, {
         },
         background: {
             default: '#0b0e17',
-            paper: '#141824',
+            paper: '#1a2032',
         },
         text: {
-            primary: '#e2e8f0',
-            secondary: '#94a3b8',
+            primary: '#f1f5f9',
+            secondary: '#b7c3d6',
         },
-        divider: '#1e2937',
+        divider: '#3a4660',
     },
 
     typography: {
@@ -336,6 +392,69 @@ export const solprintDarkTheme: ThemeOptions = deepmerge(defaultDarkTheme, {
             styleOverrides: {
                 root: {
                     backgroundColor: '#1b2238',
+                },
+            },
+        },
+
+        // Inputs "filled": borde pintado con box-shadow inset
+        // para no alterar la altura del control.
+        MuiFilledInput: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: '#1c2233',
+                    borderRadius: 6,
+                    boxShadow: 'inset 0 0 0 1px #4a5876',
+                    transition:
+                        'background-color 120ms ease, box-shadow 120ms ease',
+                    '&:hover': {
+                        backgroundColor: '#1f273b',
+                        boxShadow: 'inset 0 0 0 1px #6b7a99',
+                    },
+                    '&.Mui-focused': {
+                        backgroundColor: '#1f273b',
+                        boxShadow: 'inset 0 0 0 2px #fbbf24',
+                    },
+                    '&.Mui-error': {
+                        boxShadow: 'inset 0 0 0 1px #ef4444',
+                    },
+                    '&:before, &:after': { display: 'none' },
+                },
+            },
+        },
+
+        // Inputs "outlined": sólo color del notchedOutline y radio.
+        MuiOutlinedInput: {
+            styleOverrides: {
+                root: {
+                    borderRadius: 6,
+                    '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#4a5876',
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#6b7a99',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#fbbf24',
+                        borderWidth: 2,
+                    },
+                },
+            },
+        },
+
+        // Fondo grisáceo para el Datagrid.
+        RaDatagrid: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: '#1d2438',
+                },
+            },
+        },
+
+        // Línea entre filas muy fina y apenas perceptible.
+        MuiTableCell: {
+            styleOverrides: {
+                body: {
+                    borderBottomColor: '#2a334b',
                 },
             },
         },
