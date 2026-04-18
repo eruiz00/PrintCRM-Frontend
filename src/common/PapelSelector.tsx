@@ -9,6 +9,7 @@ import {
     Pagination,
     Labeled,
     useListContext,
+    useTranslate,
 } from "react-admin";
 import {
     Box,
@@ -42,9 +43,10 @@ export const PapelSelector = (props: {
 }) => {
     const { field } = useInput({ source: props.source });
     const [open, setOpen] = useState(false);
+    const translate = useTranslate();
 
     return (
-        <Labeled label={props.label ?? "Soporte (papel)"} fullWidth>
+        <Labeled label={props.label ?? "papel.label"} fullWidth>
             <Box
                 sx={{
                     display: "flex",
@@ -67,7 +69,7 @@ export const PapelSelector = (props: {
                     <IconButton
                         size="small"
                         onClick={() => field.onChange(null)}
-                        title="Quitar papel"
+                        title={translate("papel.remove_title")}
                     >
                         <ClearIcon fontSize="small" />
                     </IconButton>
@@ -78,7 +80,7 @@ export const PapelSelector = (props: {
                     size="small"
                     onClick={() => setOpen(true)}
                 >
-                    Seleccionar...
+                    {translate("papel.select")}
                 </Button>
 
                 <PapelPickerDialog
@@ -96,10 +98,11 @@ export const PapelSelector = (props: {
 
 /* -------------------------------------------------------------------------
    Display del papel actualmente seleccionado:
-   papel.grupopapelid  →  grupopapel  →  nombregrupo + grupo + color
+   papel.grupopapelid  ->  grupopapel  ->  nombregrupo + grupo + color
    ------------------------------------------------------------------------- */
 const PapelDisplay = ({ papelId }: { papelId: any }) => {
     const id = papelId ? Number(papelId) : 0;
+    const translate = useTranslate();
 
     const { data: papel, isLoading: lp } = useGetOne(
         "papel",
@@ -116,22 +119,22 @@ const PapelDisplay = ({ papelId }: { papelId: any }) => {
     if (!papelId) {
         return (
             <Typography variant="body2" color="text.secondary">
-                — Sin papel seleccionado —
+                {translate("papel.empty")}
             </Typography>
         );
     }
     if (lp || lg) {
         return (
             <Typography variant="body2" color="text.secondary">
-                Cargando…
+                {translate("papel.loading")}
             </Typography>
         );
     }
     if (!grupo) {
         return (
             <Typography variant="body2">
-                Papel #{papelId}
-                {papel?.papel ? ` – ${papel.papel}` : ""}
+                {translate("papel.fields.papel")} #{papelId}
+                {papel?.papel ? ` - ${papel.papel}` : ""}
             </Typography>
         );
     }
@@ -149,7 +152,7 @@ const PapelDisplay = ({ papelId }: { papelId: any }) => {
 
     return (
         <Typography variant="body2">
-            {display || `Papel #${papelId}`}
+            {display || `${translate("papel.fields.papel")} #${papelId}`}
             {extras.length ? ` · ${extras.join(" · ")}` : ""}
         </Typography>
     );
@@ -168,6 +171,7 @@ const PapelPickerDialog = ({
     onSelect: (papelId: number) => void;
 }) => {
     const [grupoId, setGrupoId] = useState<number | null>(null);
+    const translate = useTranslate();
 
     // Reset al abrir
     useEffect(() => {
@@ -182,7 +186,7 @@ const PapelPickerDialog = ({
             fullWidth
             scroll="paper"
         >
-            <DialogTitle>Seleccionar papel</DialogTitle>
+            <DialogTitle>{translate("papel.dialog_title")}</DialogTitle>
             <DialogContent dividers sx={{ p: 0 }}>
                 <Box
                     sx={{
@@ -204,7 +208,7 @@ const PapelPickerDialog = ({
                         }}
                     >
                         <Typography variant="subtitle2" sx={{ mb: 1 }}>
-                            Grupos de papel
+                            {translate("papel.groups_title")}
                         </Typography>
                         <GrupoPapelList
                             selectedId={grupoId}
@@ -222,7 +226,7 @@ const PapelPickerDialog = ({
                         }}
                     >
                         <Typography variant="subtitle2" sx={{ mb: 1 }}>
-                            Papeles del grupo
+                            {translate("papel.papers_title")}
                         </Typography>
                         {grupoId ? (
                             <PapelList
@@ -237,14 +241,14 @@ const PapelPickerDialog = ({
                                     fontStyle: "italic",
                                 }}
                             >
-                                Selecciona primero un grupo a la izquierda.
+                                {translate("papel.pick_group_first")}
                             </Box>
                         )}
                     </Box>
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose}>Cancelar</Button>
+                <Button onClick={onClose}>{translate("common.cancel")}</Button>
             </DialogActions>
         </Dialog>
     );
@@ -259,7 +263,9 @@ const GrupoPapelList = ({
 }: {
     selectedId: number | null;
     onSelect: (id: number) => void;
-}) => (
+}) => {
+    const translate = useTranslate();
+    return (
     <ListBase
         resource="grupopapel"
         perPage={25}
@@ -267,7 +273,7 @@ const GrupoPapelList = ({
         sort={{ field: "nombregrupo", order: "ASC" }}
         storeKey="papel-selector.grupopapel"
     >
-        <SearchBar placeholder="Buscar grupo…" />
+        <SearchBar placeholder={translate("papel.search_group")} />
         <Datagrid
             bulkActionButtons={false}
             rowClick={(id: any) => {
@@ -281,13 +287,14 @@ const GrupoPapelList = ({
             }
             sx={{ "& .RaDatagrid-rowCell": { py: 0.5 } }}
         >
-            <TextField source="nombregrupo" label="Nombre" />
-            <TextField source="grupo" label="Grupo" />
-            <TextField source="color" label="Color" />
+            <TextField source="nombregrupo" label="papel.fields.nombregrupo" />
+            <TextField source="grupo" label="papel.fields.grupo" />
+            <TextField source="color" label="papel.fields.color" />
         </Datagrid>
         <Pagination rowsPerPageOptions={[25, 50, 100]} />
     </ListBase>
-);
+    );
+};
 
 /* -------------------------------------------------------------------------
    Grid de papel (filtrado por grupopapelid)
@@ -298,7 +305,9 @@ const PapelList = ({
 }: {
     grupoId: number;
     onSelect: (papelId: number) => void;
-}) => (
+}) => {
+    const translate = useTranslate();
+    return (
     <ListBase
         resource="papel"
         filter={{ grupopapelid_eq: grupoId }}
@@ -307,7 +316,7 @@ const PapelList = ({
         sort={{ field: "gramaje", order: "ASC" }}
         storeKey={`papel-selector.papel.${grupoId}`}
     >
-        <SearchBar placeholder="Buscar papel…" sourceField="papel" />
+        <SearchBar placeholder={translate("papel.search_paper")} sourceField="papel" />
         <Datagrid
             bulkActionButtons={false}
             rowClick={(id: any) => {
@@ -316,14 +325,15 @@ const PapelList = ({
             }}
             sx={{ "& .RaDatagrid-rowCell": { py: 0.5 } }}
         >
-            <TextField source="papel" label="Papel" />
-            <NumberField source="gramaje" label="Gramaje" />
-            <NumberField source="ancho" label="Ancho" />
-            <NumberField source="alto" label="Alto" />
+            <TextField source="papel" label="papel.fields.papel" />
+            <NumberField source="gramaje" label="papel.fields.gramaje" />
+            <NumberField source="ancho" label="papel.fields.ancho" />
+            <NumberField source="alto" label="papel.fields.alto" />
         </Datagrid>
         <Pagination rowsPerPageOptions={[25, 50, 100]} />
     </ListBase>
-);
+    );
+};
 
 /* -------------------------------------------------------------------------
    Barra de búsqueda con estado local + debounce.
@@ -337,6 +347,7 @@ const SearchBar = ({
     sourceField?: string;
 }) => {
     const { setFilters, filterValues } = useListContext();
+    const translate = useTranslate();
     const [value, setValue] = useState<string>(
         (filterValues?.[sourceField] as string) ?? ""
     );
@@ -380,7 +391,7 @@ const SearchBar = ({
             <MuiTextField
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                placeholder={placeholder ?? "Buscar…"}
+                placeholder={placeholder ?? translate("papel.search_default")}
                 size="small"
                 variant="outlined"
                 fullWidth

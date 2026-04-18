@@ -3,6 +3,7 @@ import {
   List,
   Datagrid,
   SimpleForm,
+  TabbedForm,
   useGetOne,
   useCreate,
   useUpdate,
@@ -13,19 +14,48 @@ import {
   Toolbar,
   SaveButton,
   useNotify,
+  useTranslate,
 } from "react-admin";
 import { Box, Button, Paper, Typography } from "@mui/material";
+
+/**
+ * Renderiza un array de inputs dentro de un grid de 12 columnas,
+ * respetando la prop `data-colspan` de cada uno.
+ */
+const FormGrid = ({ fields }: { fields: any[] }) => (
+  <Box
+    sx={{
+      display: "grid",
+      gridTemplateColumns: "repeat(12, 1fr)",
+      rowGap: 0,
+      columnGap: 2,
+      maxWidth: "none",
+      width: "100%",
+    }}
+  >
+    {fields.map((field: any, index: number) => {
+      const colSpan = field.props?.["data-colspan"] || 4;
+      return (
+        <Box key={index} sx={{ gridColumn: `span ${colSpan}` }}>
+          {field}
+        </Box>
+      );
+    })}
+  </Box>
+);
 
 export const SimpleCrudView = ({
   resource,
   filters,
   columns,
   form,
+  formTabs,
   title,
 }: any) => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const refresh = useRefresh();
   const notify = useNotify();
+  const translate = useTranslate();
 
   const { data: record } = useGetOne(
     resource,
@@ -51,7 +81,7 @@ export const SimpleCrudView = ({
             setSelectedId(null);
           },
           onError: (error: any) => {
-            notify(error.message || "Error al actualizar", { type: "error" });
+            notify(error.message || translate("crud.error_update"), { type: "error" });
           },
         }
       );
@@ -65,7 +95,7 @@ export const SimpleCrudView = ({
             setSelectedId(null);
           },
           onError: (error: any) => {
-            notify(error.message || "Error al crear", { type: "error" });
+            notify(error.message || translate("crud.error_create"), { type: "error" });
           },
         }
       );
@@ -87,7 +117,7 @@ export const SimpleCrudView = ({
           setSelectedId(null);
         },
         onError: (error: any) => {
-          notify(error.message || "Error al borrar", { type: "error" });
+          notify(error.message || translate("crud.error_delete"), { type: "error" });
         },
       }
     );
@@ -121,7 +151,7 @@ export const SimpleCrudView = ({
           onClick={handleDelete}
           sx={{ ml: 2 }}
         >
-          Borrar
+          {translate("common.delete")}
         </Button>
       )}
 
@@ -131,7 +161,7 @@ export const SimpleCrudView = ({
         onClick={() => setSelectedId(null)}
         sx={{ ml: 2 }}
       >
-        Cancelar
+        {translate("common.cancel")}
       </Button>
     </Toolbar>
   );
@@ -167,38 +197,38 @@ export const SimpleCrudView = ({
         <Paper elevation={4} sx={{ p: 3, borderRadius: 3 }}>
           {title && (
             <Typography variant="h6" sx={{ mb: 2 }}>
-              {selectedId === 0 ? "Crear elemento" : "Editar elemento"}
+              {selectedId === 0
+                ? translate("crud.create_item")
+                : translate("crud.edit_item")}
             </Typography>
           )}
 
-          <SimpleForm
-            key={selectedId}
-            record={record}
-            onSubmit={handleSubmit}
-            toolbar={<CustomToolbar />}
-            sx={{ maxWidth: "none", width: "100%", padding: "0" }}
-          >
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(12, 1fr)",
-                rowGap: 0,
-                columnGap: 2,
-                maxWidth: "none",
-                width: "100%",
-              }}
+          {formTabs ? (
+            <TabbedForm
+              key={selectedId}
+              record={record}
+              onSubmit={handleSubmit}
+              toolbar={<CustomToolbar />}
+              syncWithLocation={false}
+              sx={{ maxWidth: "none", width: "100%", padding: "0" }}
             >
-              {form.map((field: any, index: number) => {
-                const colSpan = field.props?.["data-colspan"] || 4;
-
-                return (
-                  <Box key={index} sx={{ gridColumn: `span ${colSpan}` }}>
-                    {field}
-                  </Box>
-                );
-              })}
-            </Box>
-          </SimpleForm>
+              {formTabs.map((tab: { label: string; fields: any[] }) => (
+                <TabbedForm.Tab key={tab.label} label={tab.label}>
+                  <FormGrid fields={tab.fields} />
+                </TabbedForm.Tab>
+              ))}
+            </TabbedForm>
+          ) : (
+            <SimpleForm
+              key={selectedId}
+              record={record}
+              onSubmit={handleSubmit}
+              toolbar={<CustomToolbar />}
+              sx={{ maxWidth: "none", width: "100%", padding: "0" }}
+            >
+              <FormGrid fields={form} />
+            </SimpleForm>
+          )}
         </Paper>
       )}
     </Box>

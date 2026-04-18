@@ -9,12 +9,14 @@ import {
     SelectInput,
     AutocompleteInput,
     useGetList,
+    useTranslate,
 } from "react-admin";
 import { SubCrudView } from "../views/SubCrudView";
 import {
     PARTE_TRABAJO_CHOICES,
     PARTE_TRABAJO_MAP,
 } from "../common/constants";
+import { EnumField } from "../common/EnumField";
 import { PapelSelector } from "../common/PapelSelector";
 
 /////////////////////////////////////////////////////////////
@@ -50,46 +52,43 @@ const GrupoTintaInput = (props: {
 // Opciones auxiliares
 //
 // `orientacion` es int en la DDL; sin catálogo claro, asumimos
-// 0 = vertical, 1 = horizontal. Ajustar si no coincide.
+// 0 = vertical, 1 = horizontal.  Usamos claves i18n como name.
 const ORIENTACION_CHOICES = [
-    { id: 0, name: "Vertical" },
-    { id: 1, name: "Horizontal" },
+    { id: 0, name: "linea.orientacion.vertical" },
+    { id: 1, name: "linea.orientacion.horizontal" },
 ];
 
 /////////////////////////////////////////////////////////////
 // COLUMNAS
 const columns = [
-    { type: TextField, props: { source: "id", label: "Id" } },
+    { type: TextField, props: { source: "id", label: "linea.fields.id" } },
     {
-        type: FunctionField,
+        type: EnumField,
         props: {
             source: "partetrabajo",
-            label: "Parte trabajo",
-            render: (r: any) =>
-                r?.partetrabajo != null
-                    ? PARTE_TRABAJO_MAP[r.partetrabajo] ?? r.partetrabajo
-                    : "",
+            label: "linea.fields.partetrabajo",
+            map: PARTE_TRABAJO_MAP,
         },
     },
-    { type: TextField, props: { source: "descripcion", label: "Descripción" } },
-    { type: NumberField, props: { source: "paginas", label: "Páginas" } },
+    { type: TextField, props: { source: "descripcion", label: "linea.fields.descripcion" } },
+    { type: NumberField, props: { source: "paginas", label: "linea.fields.paginas" } },
     {
         type: FunctionField,
         props: {
             source: "anchofinal",
-            label: "Formato (A×A)",
+            label: "linea.fields.formato",
             render: (r: any) =>
                 r?.anchofinal && r?.altofinal
                     ? `${r.anchofinal} × ${r.altofinal}`
                     : "",
         },
     },
-    { type: NumberField, props: { source: "sangrado", label: "Sangrado" } },
+    { type: NumberField, props: { source: "sangrado", label: "linea.fields.sangrado" } },
     {
         type: NumberField,
-        props: { source: "ejemplaresextra", label: "Ejemp. extra" },
+        props: { source: "ejemplaresextra", label: "linea.fields.ejemplares_extra" },
     },
-    { type: BooleanField, props: { source: "ocultar", label: "Ocultar" } },
+    { type: BooleanField, props: { source: "ocultar", label: "linea.fields.ocultar" } },
 ];
 
 /////////////////////////////////////////////////////////////
@@ -98,66 +97,68 @@ const form = [
     // --- Cabecera de la línea
     <SelectInput
         source="partetrabajo"
-        label="Parte trabajo"
+        label="linea.fields.partetrabajo"
         choices={PARTE_TRABAJO_CHOICES}
         data-colspan="4"
+        translateChoice
     />,
-    <TextInput source="descripcion" label="Descripción" data-colspan="5" />,
+    <TextInput source="descripcion" label="linea.fields.descripcion" data-colspan="5" />,
     <SelectInput
         source="orientacion"
-        label="Orientación"
+        label="linea.fields.orientacion"
         choices={ORIENTACION_CHOICES}
         data-colspan="3"
+        translateChoice
     />,
 
     // --- Tirada / páginas
-    <NumberInput source="paginas" label="Páginas" data-colspan="3" />,
+    <NumberInput source="paginas" label="linea.fields.paginas" data-colspan="3" />,
     <NumberInput
         source="ejemplaresextra"
-        label="Ejemp. extra"
+        label="linea.fields.ejemplares_extra"
         data-colspan="3"
     />,
     <NumberInput
         source="modificadortirada"
-        label="Modif. tirada"
+        label="linea.fields.modificador_tirada"
         data-colspan="3"
     />,
     <NumberInput
         source="multiplicidad"
-        label="Multiplicidad"
+        label="linea.fields.multiplicidad"
         data-colspan="3"
     />,
 
     // --- Formato cerrado
-    <NumberInput source="anchofinal" label="Ancho final" data-colspan="3" />,
-    <NumberInput source="altofinal" label="Alto final" data-colspan="3" />,
-    <NumberInput source="sangrado" label="Sangrado" data-colspan="3" />,
-    <NumberInput source="lomo" label="Lomo" data-colspan="3" />,
+    <NumberInput source="anchofinal" label="linea.fields.anchofinal" data-colspan="3" />,
+    <NumberInput source="altofinal" label="linea.fields.altofinal" data-colspan="3" />,
+    <NumberInput source="sangrado" label="linea.fields.sangrado" data-colspan="3" />,
+    <NumberInput source="lomo" label="linea.fields.lomo" data-colspan="3" />,
 
     // --- Formato abierto
     <NumberInput
         source="anchoabierto"
-        label="Ancho abierto"
+        label="linea.fields.anchoabierto"
         data-colspan="3"
     />,
-    <NumberInput source="altoabierto" label="Alto abierto" data-colspan="3" />,
+    <NumberInput source="altoabierto" label="linea.fields.altoabierto" data-colspan="3" />,
     <BooleanInput
         source="forzartamanoabierto"
-        label="Forzar tamaño abierto"
+        label="linea.fields.forzar_tamano_abierto"
         data-colspan="3"
     />,
-    <NumberInput source="anchohoja" label="Ancho hoja" data-colspan="3" />,
+    <NumberInput source="anchohoja" label="linea.fields.anchohoja" data-colspan="3" />,
 
     // --- Montaje (cuerpos)
-    <NumberInput source="altohoja" label="Alto hoja" data-colspan="3" />,
+    <NumberInput source="altohoja" label="linea.fields.altohoja" data-colspan="3" />,
     <NumberInput
         source="cuerposhorizontal"
-        label="Cuerpos horizontal"
+        label="linea.fields.cuerposhorizontal"
         data-colspan="3"
     />,
     <NumberInput
         source="cuerposvertical"
-        label="Cuerpos vertical"
+        label="linea.fields.cuerposvertical"
         data-colspan="3"
     />,
     <div data-colspan="3" />,
@@ -165,59 +166,59 @@ const form = [
     // --- Solapas
     <NumberInput
         source="anchosolapaizquierda"
-        label="Solapa izquierda"
+        label="linea.fields.solapa_izquierda"
         data-colspan="3"
     />,
     <NumberInput
         source="anchosolapaderecha"
-        label="Solapa derecha"
+        label="linea.fields.solapa_derecha"
         data-colspan="3"
     />,
     <NumberInput
         source="altosolapasuperior"
-        label="Solapa superior"
+        label="linea.fields.solapa_superior"
         data-colspan="3"
     />,
     <NumberInput
         source="altosolapainferior"
-        label="Solapa inferior"
+        label="linea.fields.solapa_inferior"
         data-colspan="3"
     />,
 
     // --- Soporte (papel) y tintas
     <PapelSelector
         source="soporteid"
-        label="Soporte (papel)"
+        label="linea.fields.soporte"
         data-colspan="12"
     />,
     <GrupoTintaInput
         source="gruposelecciontintacara"
-        label="Tintas cara"
+        label="linea.fields.tintas_cara"
         data-colspan="6"
     />,
     <GrupoTintaInput
         source="gruposelecciontintadorso"
-        label="Tintas dorso"
+        label="linea.fields.tintas_dorso"
         data-colspan="6"
     />,
 
     // --- Flags finales
     <BooleanInput
         source="paginasiguales"
-        label="Páginas iguales"
+        label="linea.fields.paginasiguales"
         data-colspan="3"
     />,
-    <BooleanInput source="subcontrata" label="Subcontrata" data-colspan="3" />,
-    <BooleanInput source="ocultar" label="Ocultar" data-colspan="3" />,
+    <BooleanInput source="subcontrata" label="linea.fields.subcontrata" data-colspan="3" />,
+    <BooleanInput source="ocultar" label="linea.fields.ocultar" data-colspan="3" />,
     <BooleanInput
         source="sinplanchas"
-        label="Sin planchas"
+        label="linea.fields.sinplanchas"
         data-colspan="3"
     />,
 
     <TextInput
         source="notastintaweb"
-        label="Notas tinta web"
+        label="linea.fields.notastintaweb"
         data-colspan="12"
     />,
 ];
@@ -228,13 +229,16 @@ export const LineasPresupuesto = ({
     presupuestoId,
 }: {
     presupuestoId: number | string;
-}) => (
-    <SubCrudView
-        resource="lineapresrecogidadatos"
-        parentField="presupuestoid"
-        parentId={presupuestoId}
-        title="Líneas del presupuesto"
-        columns={columns}
-        form={form}
-    />
-);
+}) => {
+    const translate = useTranslate();
+    return (
+        <SubCrudView
+            resource="lineapresrecogidadatos"
+            parentField="presupuestoid"
+            parentId={presupuestoId}
+            title={translate("linea.list_title")}
+            columns={columns}
+            form={form}
+        />
+    );
+};

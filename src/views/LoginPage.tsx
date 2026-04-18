@@ -1,28 +1,29 @@
 // LoginPage.tsx
-import { Login, LoginForm, TextInput, SelectInput } from "react-admin";
+import { Login, LoginForm, TextInput, SelectInput, useTranslate } from "react-admin";
 import { useSistemas } from "../common/usesistemas";
 
 const CustomLoginForm = () => {
     const { choices, loading, error } = useSistemas();
+    const translate = useTranslate();
 
     return (
         <LoginForm>
             <TextInput
                 source="username"
-                label="Usuario"
+                label={translate("login.username")}
                 fullWidth
             />
 
             <TextInput
                 source="password"
-                label="Contraseña"
+                label={translate("login.password")}
                 type="password"
                 fullWidth
             />
 
             <SelectInput
                 source="sistema"
-                label="Sistema"
+                label={translate("login.system")}
                 choices={choices}
                 fullWidth
                 disabled={loading || error}
@@ -30,15 +31,15 @@ const CustomLoginForm = () => {
 
             {error && (
                 <p style={{ color: "red" }}>
-                    Error cargando sistemas
+                    {translate("login.error_loading_systems")}
                 </p>
             )}
         </LoginForm>
     );
 };
 
-export const CustomLoginPage = () => (
-    <Login>
+export const CustomLoginPage = (props: any) => (
+    <Login {...props}>
         <CustomLoginForm />
     </Login>
 );

@@ -13,6 +13,7 @@ import {
     Toolbar,
     SaveButton,
     useNotify,
+    useTranslate,
 } from "react-admin";
 import { Box, Button, Paper, Typography, Tabs, Tab } from "@mui/material";
 
@@ -28,18 +29,19 @@ export const TabbedCrudView = ({
     const [activeTab, setActiveTab] = useState(0);
     const refresh = useRefresh();
     const notify = useNotify();
+    const translate = useTranslate();
 
     /* ---------------------------------------------------------
        EXTRACTOR DE ERRORES (BACKEND / SQL / RA / RED)
        --------------------------------------------------------- */
     const getErrorMessage = (error: any): string => {
-        if (!error) return "Error desconocido";
+        if (!error) return translate("common.unknown_error");
 
         if (error.body?.message) return error.body.message;
         if (error.body?.error?.message) return error.body.error.message;
         if (error.message) return error.message;
 
-        return "Error desconocido";
+        return translate("common.unknown_error");
     };
 
     const { data: record } = useGetOne(
@@ -140,7 +142,7 @@ export const TabbedCrudView = ({
                     onClick={handleDelete}
                     sx={{ ml: 2 }}
                 >
-                    Borrar
+                    {translate("common.delete")}
                 </Button>
             )}
 
@@ -153,7 +155,7 @@ export const TabbedCrudView = ({
                 }}
                 sx={{ ml: 2 }}
             >
-                Cancelar
+                {translate("common.cancel")}
             </Button>
         </Toolbar>
     );
@@ -170,8 +172,8 @@ export const TabbedCrudView = ({
                     onChange={(_e, v) => setActiveTab(v)}
                     variant="scrollable"
                 >
-                    <Tab label="Lista" />
-                    <Tab label="Formulario" disabled={selectedId === null} />
+                    <Tab label={translate("crud.list")} />
+                    <Tab label={translate("crud.form")} disabled={selectedId === null} />
                     {tabs.map((t: any, i: number) => (
                         <Tab key={i} label={t.label} disabled={!record} />
                     ))}
@@ -208,7 +210,9 @@ export const TabbedCrudView = ({
             {activeTab === 1 && selectedId !== null && (
                 <Paper elevation={4} sx={{ p: 3, borderRadius: 3 }}>
                     <Typography variant="h6" sx={{ mb: 2 }}>
-                        {selectedId === 0 ? "Crear elemento" : "Editar elemento"}
+                        {selectedId === 0
+                            ? translate("crud.create_item")
+                            : translate("crud.edit_item")}
                     </Typography>
 
                     <SimpleForm
@@ -243,9 +247,9 @@ export const TabbedCrudView = ({
 
             {/* TABS PERSONALIZADAS */}
             {tabs.map((t: any, i: number) =>
-                activeTab === i + 2 ? (
+                activeTab === i + 2 && record ? (
                     <Paper key={i} elevation={4} sx={{ p: 3, borderRadius: 3 }}>
-                        {t.content(record)}
+                        {t.render(record)}
                     </Paper>
                 ) : null
             )}

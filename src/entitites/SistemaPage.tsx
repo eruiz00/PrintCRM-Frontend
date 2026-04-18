@@ -1,60 +1,111 @@
-import { BooleanInput, NumberInput, required, TextField, TextInput } from "react-admin";
+import { BooleanInput, NumberInput, required, TextField, TextInput, useTranslate } from "react-admin";
 import { SimpleCrudView } from "../views/SimpleCrudView";
-import { Typography } from "@mui/material";
 
-export const sistemaPage = () => (
+export const sistemaPage = () => {
+  const translate = useTranslate();
+  return (
   <SimpleCrudView
     resource="sistema"
-    title="Sistemas"
+    title={translate("sistema.page_title")}
 
     columns={[
-      <TextField source="empresa" label="Empresa" />,
-      <TextField source="cif" label="NIF" />,
-      <TextField source="localidad" label="Localidad" />,
-      <TextField source="provincia" label="Provincia" />,
-      <TextField source="pais" label="Pais" />,
+      <TextField source="numero" label="sistema.fields.numero" />,
+      <TextField source="empresa" label="sistema.fields.empresa" />,
+      <TextField source="cif" label="sistema.fields.nif" />,
+      <TextField source="localidad" label="sistema.fields.localidad" />,
+      <TextField source="provincia" label="sistema.fields.provincia" />,
+      <TextField source="pais" label="sistema.fields.pais" />,
     ]}
-    form={[
-      <Typography color="primary" data-colspan='12'>Datos de empresa</Typography>,
-      <TextInput source="empresa" label="Empresa" fullWidth data-colspan='8' validate={[required()]} />,
-      <TextInput source="cif" label="CIF" fullWidth data-colspan='4' validate={[required()]} />,
-      <TextInput source="domicilio" label="Domicilio" fullWidth data-colspan='8' />,
-      <TextInput source="localidad" label="Localidad" fullWidth data-colspan='4' />,
-      <TextInput source="provincia" label="Provincia" fullWidth data-colspan='4' />,
-      <TextInput source="pais" label="Pais" fullWidth data-colspan='4' />,
-      <TextInput source="codigopostal" label="Código Postal" fullWidth data-colspan='4' />,
-      
-      <Typography color="primary" data-colspan='12'>Datos de contacto</Typography>,
-      <TextInput source="telefono" label="Teléfono" fullWidth data-colspan='6' />,
-      <TextInput source="fax" label="Fax" fullWidth data-colspan='6' />,
-      <TextInput source="correoelectronico" label="Correo electrónico" fullWidth data-colspan='6' />,
-      <TextInput source="web" label="Web" fullWidth data-colspan='6' />,
 
-      <Typography color="primary" data-colspan='12'>Datos bancarios</Typography>,
-      <TextInput source="banco" label="Banco" fullWidth data-colspan='6' />,
-      <Typography data-colspan="6" />,
-      <TextInput source="bancoentidad" label="Entidad" fullWidth data-colspan='2' />,
-      <TextInput source="bancosucursal" label="Sucursal" fullWidth data-colspan='2' />,
-      <TextInput source="bancodigitocontrol" label="Control" fullWidth data-colspan='2' />,
-      <TextInput source="bancoiban" label="IBAN" fullWidth data-colspan='2' />,
-      <TextInput source="bancocuenta" label="Cuenta" fullWidth data-colspan='4' />,
-      
-
-      <Typography color="primary" data-colspan='12'>Emails por departamento</Typography>,
-      <TextInput source="emailprincipal" label="Email principal" fullWidth data-colspan='6' />,
-      <Typography data-colspan="6" />,
-      <TextInput source="emailproduccion" label="Email produccion" fullWidth data-colspan='3' />,
-      <TextInput source="emailadministracion" label="Email administracion" fullWidth data-colspan='3' />,
-      <TextInput source="emailcompras" label="Email compras" fullWidth data-colspan='3' />,
-      <TextInput source="emailpresupuesto" label="Email presupuestos" fullWidth data-colspan='3' />,
-
-      <Typography color="primary" data-colspan='12'>Configuraciones varias</Typography>,
-      <NumberInput source="iva" label="IVA" fullWidth data-colspan='3' />,
-      <NumberInput source="retencion" label="Retención" fullWidth data-colspan='3' />,
-      <NumberInput source="diascaducidadpresupuesto" label="Dias caducidad presupuesto" fullWidth data-colspan='3' />,
-      <NumberInput source="maxejemplarespresupuesto" label="Max ejemplares presupuesto" fullWidth data-colspan='3' />,
-      <BooleanInput source="avisarriesgo" label="Avisar riesgo" fullWidth data-colspan='3' />,
-      <BooleanInput source="visible" label="Visible" fullWidth data-colspan='3' />,
+    /* ─────────────────────────────────────────────────────────
+       Cada "apartado" del sistema en una pestaña propia.
+       Dentro de cada pestaña se respeta el grid de 12 columnas
+       con los data-colspan de cada input.
+       ───────────────────────────────────────────────────────── */
+    formTabs={[
+      {
+        label: translate("sistema.tabs.empresa"),
+        fields: [
+          <TextInput source="numero" label="sistema.fields.numero" fullWidth data-colspan='2' />,
+          <TextInput source="empresa" label="sistema.fields.empresa" fullWidth data-colspan='6' validate={[required()]} />,
+          <TextInput source="cif" label="sistema.fields.cif" fullWidth data-colspan='4' validate={[required()]} />,
+          <TextInput source="domicilio" label="sistema.fields.domicilio" fullWidth data-colspan='8' />,
+          <TextInput source="codigopostal" label="sistema.fields.codigopostal" fullWidth data-colspan='4' />,
+          <TextInput source="localidad" label="sistema.fields.localidad" fullWidth data-colspan='4' />,
+          <TextInput source="provincia" label="sistema.fields.provincia" fullWidth data-colspan='4' />,
+          <TextInput source="pais" label="sistema.fields.pais" fullWidth data-colspan='4' />,
+        ],
+      },
+      {
+        label: translate("sistema.tabs.contacto"),
+        fields: [
+          <TextInput source="telefono1" label="sistema.fields.telefono1" fullWidth data-colspan='4' />,
+          <TextInput source="telefono2" label="sistema.fields.telefono2" fullWidth data-colspan='4' />,
+          <TextInput source="rdsi" label="sistema.fields.rdsi" fullWidth data-colspan='4' />,
+          <TextInput source="fax1" label="sistema.fields.fax1" fullWidth data-colspan='4' />,
+          <TextInput source="fax2" label="sistema.fields.fax2" fullWidth data-colspan='4' />,
+          <div data-colspan="4" />,
+          <TextInput source="correoelectronico" label="sistema.fields.correoelectronico" fullWidth data-colspan='6' />,
+          <TextInput source="web" label="sistema.fields.web" fullWidth data-colspan='6' />,
+        ],
+      },
+      {
+        label: translate("sistema.tabs.bancarios"),
+        fields: [
+          <TextInput source="banco" label="sistema.fields.banco" fullWidth data-colspan='6' />,
+          <TextInput source="bancodomicilio" label="sistema.fields.bancodomicilio" fullWidth data-colspan='6' />,
+          <TextInput source="bancoentidad" label="sistema.fields.bancoentidad" fullWidth data-colspan='2' />,
+          <TextInput source="bancosucursal" label="sistema.fields.bancosucursal" fullWidth data-colspan='2' />,
+          <TextInput source="bancodigitocontrol" label="sistema.fields.bancodigitocontrol" fullWidth data-colspan='2' />,
+          <TextInput source="bancocuenta" label="sistema.fields.bancocuenta" fullWidth data-colspan='3' />,
+          <TextInput source="bancoiban" label="sistema.fields.bancoiban" fullWidth data-colspan='3' />,
+          <TextInput source="bancoidpresentador" label="sistema.fields.bancoidpresentador" fullWidth data-colspan='12' />,
+        ],
+      },
+      {
+        label: translate("sistema.tabs.emails"),
+        fields: [
+          <TextInput source="emailprincipal" label="sistema.fields.emailprincipal" fullWidth data-colspan='6' />,
+          <TextInput source="emailpresupuesto" label="sistema.fields.emailpresupuesto" fullWidth data-colspan='6' />,
+          <TextInput source="emailproduccion" label="sistema.fields.emailproduccion" fullWidth data-colspan='4' />,
+          <TextInput source="emailadministracion" label="sistema.fields.emailadministracion" fullWidth data-colspan='4' />,
+          <TextInput source="emailcompras" label="sistema.fields.emailcompras" fullWidth data-colspan='4' />,
+        ],
+      },
+      {
+        label: translate("sistema.tabs.smtp"),
+        fields: [
+          <TextInput source="smtpservidor" label="sistema.fields.smtpservidor" fullWidth data-colspan='6' />,
+          <NumberInput source="smtppuerto" label="sistema.fields.smtppuerto" fullWidth data-colspan='2' />,
+          <div data-colspan="4" />,
+          <TextInput source="smtpusuario" label="sistema.fields.smtpusuario" fullWidth data-colspan='6' />,
+          <TextInput source="smtpclave" label="sistema.fields.smtpclave" type="password" fullWidth data-colspan='6' />,
+          <BooleanInput source="smtpautentificar" label="sistema.fields.smtpautentificar" fullWidth data-colspan='3' />,
+          <BooleanInput source="smtpusarssl" label="sistema.fields.smtpusarssl" fullWidth data-colspan='3' />,
+        ],
+      },
+      {
+        label: translate("sistema.tabs.impuestos"),
+        fields: [
+          <NumberInput source="iva1" label="sistema.fields.iva1" fullWidth data-colspan='3' />,
+          <NumberInput source="iva2" label="sistema.fields.iva2" fullWidth data-colspan='3' />,
+          <NumberInput source="retencion1" label="sistema.fields.retencion1" fullWidth data-colspan='3' />,
+          <NumberInput source="retencion2" label="sistema.fields.retencion2" fullWidth data-colspan='3' />,
+        ],
+      },
+      {
+        label: translate("sistema.tabs.configuracion"),
+        fields: [
+          <NumberInput source="diascaducidadpresupuesto" label="sistema.fields.diascaducidadpresupuesto" fullWidth data-colspan='3' />,
+          <NumberInput source="diaspurgaeliminados" label="sistema.fields.diaspurgaeliminados" fullWidth data-colspan='3' />,
+          <NumberInput source="maxejemplarespresupuesto" label="sistema.fields.maxejemplarespresupuesto" fullWidth data-colspan='3' />,
+          <NumberInput source="maxejemplarestarifa" label="sistema.fields.maxejemplarestarifa" fullWidth data-colspan='3' />,
+          <BooleanInput source="avisarriesgo" label="sistema.fields.avisarriesgo" fullWidth data-colspan='3' />,
+          <BooleanInput source="bloqueado" label="sistema.fields.bloqueado" fullWidth data-colspan='3' />,
+          <BooleanInput source="visible" label="sistema.fields.visible" fullWidth data-colspan='3' />,
+        ],
+      },
     ]}
   />
-);
+  );
+};

@@ -13,6 +13,7 @@ import {
     Toolbar,
     SaveButton,
     useNotify,
+    useTranslate,
 } from "react-admin";
 import { Box, Button, Paper, Typography } from "@mui/material";
 
@@ -32,6 +33,7 @@ export const SubCrudView = ({
     columns,
     form,
     title,
+    transform,
 }: {
     resource: string;
     parentField: string;
@@ -39,17 +41,24 @@ export const SubCrudView = ({
     columns: any;
     form: any;
     title?: string;
+    /**
+     * Transformación opcional aplicada a los valores antes del
+     * submit (tanto en create como en update).  Útil para inyectar
+     * campos calculados como `fechamodificacion`.
+     */
+    transform?: (data: any, mode: "create" | "update") => any;
 }) => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const refresh = useRefresh();
     const notify = useNotify();
+    const translate = useTranslate();
 
     const getErrorMessage = (error: any): string => {
-        if (!error) return "Error desconocido";
+        if (!error) return translate("common.unknown_error");
         if (error.body?.message) return error.body.message;
         if (error.body?.error?.message) return error.body.error.message;
         if (error.message) return error.message;
-        return "Error desconocido";
+        return translate("common.unknown_error");
     };
 
     const { data: record } = useGetOne(
@@ -66,9 +75,11 @@ export const SubCrudView = ({
        SUBMIT  (siempre fuerza parentField = parentId)
        --------------------------------------------------------- */
     const handleSubmit = (values: any) => {
-        const data = { ...values, [parentField]: parentId };
+        const base = { ...values, [parentField]: parentId };
+        const isUpdate = !!(selectedId && selectedId !== 0);
+        const data = transform ? transform(base, isUpdate ? "update" : "create") : base;
 
-        if (selectedId && selectedId !== 0) {
+        if (isUpdate) {
             return update(
                 resource,
                 { id: selectedId, data, previousData: record },
@@ -140,7 +151,7 @@ export const SubCrudView = ({
                     onClick={handleDelete}
                     sx={{ ml: 2 }}
                 >
-                    Borrar
+                    {translate("common.delete")}
                 </Button>
             )}
             <Button
@@ -149,7 +160,7 @@ export const SubCrudView = ({
                 onClick={() => setSelectedId(null)}
                 sx={{ ml: 2 }}
             >
-                Cancelar
+                {translate("common.cancel")}
             </Button>
         </Toolbar>
     );
@@ -194,7 +205,9 @@ export const SubCrudView = ({
             {selectedId !== null && (
                 <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
                     <Typography variant="h6" sx={{ mb: 2 }}>
-                        {selectedId === 0 ? "Nueva línea" : "Editar línea"}
+                        {selectedId === 0
+                            ? translate("crud.new_line")
+                            : translate("crud.edit_line")}
                     </Typography>
 
                     <SimpleForm

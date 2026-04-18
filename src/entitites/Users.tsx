@@ -12,21 +12,21 @@ import {
 } from "react-admin";
 
 const UsersFilters = [
-  <TextInput label="Nombre" source="name" alwaysOn />,
-  <TextInput label="Nif" source="nif" alwaysOn />,
-  <TextInput label="Email" source="email" alwaysOn />,
-  <TextInput label="Autor" source="createdBy" alwaysOn />,
+  <TextInput label="users.fields.name" source="name" alwaysOn />,
+  <TextInput label="users.fields.nif" source="nif" alwaysOn />,
+  <TextInput label="users.fields.email" source="email" alwaysOn />,
+  <TextInput label="users.fields.createdBy" source="createdBy" alwaysOn />,
 ];
 
 export const UsersList = () => (
   <List resource="users" filters={UsersFilters}>
     <Datagrid rowClick="edit">
-      <TextField source="id" />
-      <TextField source="name" label="Nombre" />
-      <TextField source="nif" label="Nif" />
-      <TextField source="email" label="Email" />
-      <DateField source="createdAt" label="Creado el" showTime />
-      <TextField source="createdBy" label="Autor" />
+      <TextField source="id" label="users.fields.id" />
+      <TextField source="name" label="users.fields.name" />
+      <TextField source="nif" label="users.fields.nif" />
+      <TextField source="email" label="users.fields.email" />
+      <DateField source="createdAt" label="users.fields.createdAt" showTime />
+      <TextField source="createdBy" label="users.fields.createdBy" />
       <EditButton />
     </Datagrid>
   </List>
@@ -36,11 +36,11 @@ export const UsersList = () => (
 export const UsersEdit = () => (
   <Edit>
     <SimpleForm>
-      <TextInput source="name" validate={[required()]} />
-      <TextInput source="nif" validate={[required()]} />
-      <TextInput source="phone"  />
-      <TextInput source="email" />
-      <TextInput source="address"  />
+      <TextInput source="name" label="users.fields.name" validate={[required()]} />
+      <TextInput source="nif" label="users.fields.nif" validate={[required()]} />
+      <TextInput source="phone" label="users.fields.phone" />
+      <TextInput source="email" label="users.fields.email" />
+      <TextInput source="address" label="users.fields.address" />
     </SimpleForm>
   </Edit>
 );
@@ -48,11 +48,11 @@ export const UsersEdit = () => (
 export const UsersCreate = () => (
   <Create>
     <SimpleForm>
-      <TextInput source="name" />
-      <TextInput source="nif" />
-      <TextInput source="phone"  />
-      <TextInput source="email" />
-      <TextInput source="address"  />
+      <TextInput source="name" label="users.fields.name" validate={[required()]} />
+      <TextInput source="nif" label="users.fields.nif" validate={[required()]} />
+      <TextInput source="phone" label="users.fields.phone" />
+      <TextInput source="email" label="users.fields.email" />
+      <TextInput source="address" label="users.fields.address" />
     </SimpleForm>
   </Create>
 );

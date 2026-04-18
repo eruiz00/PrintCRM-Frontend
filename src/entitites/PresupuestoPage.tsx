@@ -1,37 +1,39 @@
 import {
     TextField,
     DateField,
-    FunctionField,
     ReferenceField,
     TextInput,
     DateInput,
     SelectInput,
     ReferenceInput,
     AutocompleteInput,
+    useTranslate,
 } from "react-admin";
 import { TabbedCrudView } from "../views/TabbedCrudView";
 import {
     ESTADO_PRESUPUESTO_CHOICES,
     ESTADO_PRESUPUESTO_MAP,
 } from "../common/constants";
+import { EnumField } from "../common/EnumField";
 import { LineasPresupuesto } from "./LineasPresupuesto";
 
 /////////////////////////////////////////////////////////////
 // COLUMNS (lista)
 //
 // TabbedCrudView renderiza los columns como  <col.type {...col.props} />,
-// así que pasamos { type, props }.
+// así que pasamos { type, props }.  Los labels son claves i18n y
+// react-admin los traduce automáticamente.
 export const presupuestoColumns = [
-    { type: TextField, props: { source: "numpresupuesto", label: "Nº" } },
-    { type: DateField, props: { source: "fechaentrada", label: "Entrada" } },
-    { type: DateField, props: { source: "fechaconfeccion", label: "Confección" } },
-    { type: DateField, props: { source: "fechasalida", label: "Salida" } },
+    { type: TextField, props: { source: "numpresupuesto", label: "presupuesto.fields.num_short" } },
+    { type: DateField, props: { source: "fechaentrada", label: "presupuesto.fields.fechaentrada_short" } },
+    { type: DateField, props: { source: "fechaconfeccion", label: "presupuesto.fields.fechaconfeccion_short" } },
+    { type: DateField, props: { source: "fechasalida", label: "presupuesto.fields.fechasalida_short" } },
     {
         type: ReferenceField,
         props: {
             source: "clienteid",
             reference: "cliente",
-            label: "Cliente",
+            label: "presupuesto.fields.clienteid",
             link: false,
         },
     },
@@ -40,21 +42,18 @@ export const presupuestoColumns = [
         props: {
             source: "comercialid",
             reference: "comercial",
-            label: "Comercial",
+            label: "presupuesto.fields.comercialid",
             link: false,
         },
     },
-    { type: TextField, props: { source: "descripcion", label: "Descripción" } },
-    { type: TextField, props: { source: "referencia", label: "Referencia" } },
+    { type: TextField, props: { source: "descripcion", label: "presupuesto.fields.descripcion" } },
+    { type: TextField, props: { source: "referencia", label: "presupuesto.fields.referencia" } },
     {
-        type: FunctionField,
+        type: EnumField,
         props: {
             source: "estado",
-            label: "Estado",
-            render: (record: any) =>
-                record?.estado != null
-                    ? ESTADO_PRESUPUESTO_MAP[record.estado] ?? record.estado
-                    : "",
+            label: "presupuesto.fields.estado",
+            map: ESTADO_PRESUPUESTO_MAP,
         },
     },
     {
@@ -62,7 +61,7 @@ export const presupuestoColumns = [
         props: {
             source: "tipotrabajo",
             reference: "tipotrabajo",
-            label: "Tipo trabajo",
+            label: "presupuesto.fields.tipotrabajo",
             link: false,
         },
     },
@@ -75,13 +74,13 @@ export const presupuestoColumns = [
 // (cs=contains -default-, eq, ge, le, gt, lt, bt, in, is).
 // `q` se traduce a ?search= (búsqueda libre global).
 export const presupuestoFilters = [
-    <TextInput label="Búsqueda" source="q" alwaysOn resettable />,
-    <TextInput label="Nº presupuesto" source="numpresupuesto" alwaysOn resettable />,
-    <TextInput label="Referencia" source="referencia" alwaysOn resettable />,
+    <TextInput label="presupuesto.fields.busqueda" source="q" alwaysOn resettable />,
+    <TextInput label="presupuesto.fields.numpresupuesto" source="numpresupuesto" alwaysOn resettable />,
+    <TextInput label="presupuesto.fields.referencia" source="referencia" alwaysOn resettable />,
 
     <ReferenceInput source="clienteid_eq" reference="cliente" alwaysOn>
         <AutocompleteInput
-            label="Cliente"
+            label="presupuesto.fields.clienteid"
             optionText="empresa"
             filterToQuery={(q: string) => ({ empresa: q })}
         />
@@ -89,39 +88,40 @@ export const presupuestoFilters = [
 
     <ReferenceInput source="comercialid_eq" reference="comercial" alwaysOn>
         <AutocompleteInput
-            label="Comercial"
+            label="presupuesto.fields.comercialid"
             optionText="nombre"
             filterToQuery={(q: string) => ({ nombre: q })}
         />
     </ReferenceInput>,
 
-    <DateInput source="fechaentrada_ge" label="Entrada desde" alwaysOn />,
-    <DateInput source="fechaentrada_le" label="Entrada hasta" alwaysOn />,
+    <DateInput source="fechaentrada_ge" label="presupuesto.fields.entrada_desde" alwaysOn />,
+    <DateInput source="fechaentrada_le" label="presupuesto.fields.entrada_hasta" alwaysOn />,
 
     <SelectInput
         source="estado_eq"
-        label="Estado"
+        label="presupuesto.fields.estado"
         choices={ESTADO_PRESUPUESTO_CHOICES}
         alwaysOn
         resettable
+        translateChoice
     />,
 
     <ReferenceInput source="tipotrabajo_eq" reference="tipotrabajo" alwaysOn>
-        <SelectInput label="Tipo trabajo" optionText="tipotrabajo" resettable />
+        <SelectInput label="presupuesto.fields.tipotrabajo" optionText="tipotrabajo" resettable />
     </ReferenceInput>,
 ];
 
 /////////////////////////////////////////////////////////////
 // FORM (solo cabecera)
 export const presupuestoForm = [
-    <TextInput source="numpresupuesto" label="Nº presupuesto" data-colspan="3" />,
-    <DateInput source="fechaentrada" label="Fecha entrada" data-colspan="3" />,
-    <DateInput source="fechaconfeccion" label="Fecha confección" data-colspan="3" />,
-    <DateInput source="fechasalida" label="Fecha salida" data-colspan="3" />,
+    <TextInput source="numpresupuesto" label="presupuesto.fields.numpresupuesto" data-colspan="3" />,
+    <DateInput source="fechaentrada" label="presupuesto.fields.fechaentrada" data-colspan="3" />,
+    <DateInput source="fechaconfeccion" label="presupuesto.fields.fechaconfeccion" data-colspan="3" />,
+    <DateInput source="fechasalida" label="presupuesto.fields.fechasalida" data-colspan="3" />,
 
     <ReferenceInput source="clienteid" reference="cliente">
         <AutocompleteInput
-            label="Cliente"
+            label="presupuesto.fields.clienteid"
             optionText="empresa"
             filterToQuery={(q: string) => ({ empresa: q })}
             fullWidth
@@ -129,7 +129,7 @@ export const presupuestoForm = [
     </ReferenceInput>,
     <ReferenceInput source="contactoid" reference="contactocliente">
         <AutocompleteInput
-            label="Contacto"
+            label="presupuesto.fields.contactoid"
             optionText="nombre"
             filterToQuery={(q: string) => ({ nombre: q })}
             fullWidth
@@ -137,7 +137,7 @@ export const presupuestoForm = [
     </ReferenceInput>,
     <ReferenceInput source="comercialid" reference="comercial">
         <AutocompleteInput
-            label="Comercial"
+            label="presupuesto.fields.comercialid"
             optionText="nombre"
             filterToQuery={(q: string) => ({ nombre: q })}
             fullWidth
@@ -145,7 +145,7 @@ export const presupuestoForm = [
     </ReferenceInput>,
     <ReferenceInput source="atencionclienteid" reference="empleado">
         <AutocompleteInput
-            label="Atención cliente"
+            label="presupuesto.fields.atencionclienteid"
             optionText="nombre"
             filterToQuery={(q: string) => ({ nombre: q })}
             fullWidth
@@ -153,45 +153,46 @@ export const presupuestoForm = [
     </ReferenceInput>,
 
     <ReferenceInput source="tipotrabajo" reference="tipotrabajo">
-        <SelectInput label="Tipo trabajo" optionText="tipotrabajo" fullWidth />
+        <SelectInput label="presupuesto.fields.tipotrabajo" optionText="tipotrabajo" fullWidth />
     </ReferenceInput>,
-    <TextInput source="referencia" label="Referencia" data-colspan="4" />,
+    <TextInput source="referencia" label="presupuesto.fields.referencia" data-colspan="4" />,
     <SelectInput
         source="estado"
-        label="Estado"
+        label="presupuesto.fields.estado"
         choices={ESTADO_PRESUPUESTO_CHOICES}
         data-colspan="4"
+        translateChoice
     />,
 
     <TextInput
         source="ejemplares"
-        label="Ejemplares"
-        helperText="Separar con / si son varios"
+        label="presupuesto.fields.ejemplares"
+        helperText="presupuesto.fields.ejemplares_help"
         data-colspan="4"
     />,
     <DateInput
         source="fechasolicitudentrega"
-        label="Solicitud de entrega"
+        label="presupuesto.fields.fechasolicitudentrega"
         data-colspan="4"
     />,
 
     <TextInput
         source="descripcion"
-        label="Descripción"
+        label="presupuesto.fields.descripcion"
         multiline
         minRows={2}
         data-colspan="12"
     />,
     <TextInput
         source="descripcioncliente"
-        label="Descripción cliente"
+        label="presupuesto.fields.descripcioncliente"
         multiline
         minRows={2}
         data-colspan="12"
     />,
     <TextInput
         source="nota"
-        label="Nota interna"
+        label="presupuesto.fields.nota"
         multiline
         minRows={2}
         data-colspan="12"
@@ -200,30 +201,33 @@ export const presupuestoForm = [
 
 /////////////////////////////////////////////////////////////
 // PAGE
-export const presupuestoPage = () => (
-    <TabbedCrudView
-        resource="presupuesto"
-        title="Gestión de Presupuestos"
-        columns={presupuestoColumns}
-        filters={presupuestoFilters}
-        form={presupuestoForm}
-        tabs={[
-            {
-                label: "Líneas",
-                content: (record: any) =>
-                    record?.id ? (
-                        <LineasPresupuesto presupuestoId={record.id} />
-                    ) : null,
-            },
-            {
-                label: "Detalles",
-                content: (record: any) => (
-                    <div>
-                        <h3>Detalles del presupuesto</h3>
-                        <pre>{JSON.stringify(record, null, 2)}</pre>
-                    </div>
-                ),
-            },
-        ]}
-    />
-);
+export const presupuestoPage = () => {
+    const translate = useTranslate();
+    return (
+        <TabbedCrudView
+            resource="presupuesto"
+            title={translate("presupuesto.page_title")}
+            columns={presupuestoColumns}
+            filters={presupuestoFilters}
+            form={presupuestoForm}
+            tabs={[
+                {
+                    label: translate("presupuesto.tab_lines"),
+                    content: (record: any) =>
+                        record?.id ? (
+                            <LineasPresupuesto presupuestoId={record.id} />
+                        ) : null,
+                },
+                {
+                    label: translate("presupuesto.tab_details"),
+                    content: (record: any) => (
+                        <div>
+                            <h3>{translate("presupuesto.details_header")}</h3>
+                            <pre>{JSON.stringify(record, null, 2)}</pre>
+                        </div>
+                    ),
+                },
+            ]}
+        />
+    );
+};

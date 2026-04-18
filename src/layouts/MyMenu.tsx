@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, MenuItemLink } from "react-admin";
+import { Menu, MenuItemLink, useTranslate } from "react-admin";
 import {
   List,
   ListItemButton,
@@ -14,7 +14,6 @@ import StorageIcon from "@mui/icons-material/Storage";
 import DesignServicesIcon from "@mui/icons-material/DesignServices";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import EngineeringIcon from '@mui/icons-material/Engineering';
-import WorkIcon from '@mui/icons-material/Work';
 import PeopleIcon from "@mui/icons-material/People";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -22,6 +21,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 
 export const MyMenu = () => {
   const [openSection, setOpenSection] = useState<string | null>(null);
+  const translate = useTranslate();
 
   const toggle = (section: string) => {
     setOpenSection(openSection === section ? null : section);
@@ -32,37 +32,31 @@ export const MyMenu = () => {
 
       {/* DASHBOARD */}
       <List component="div" disablePadding>
-        <MenuItemLink to="/dashboard" primaryText="Dashboard" leftIcon={<DashboardIcon />} />
+        <MenuItemLink to="/dashboard" primaryText={translate("menu.dashboard")} leftIcon={<DashboardIcon />} />
       </List>
 
-      {/* CONFIGURACIÓN */}
-      <ListItemButton onClick={() => toggle("config")}>
-        <ListItemIcon>
-          <SettingsIcon />
-        </ListItemIcon>
-        <ListItemText primary="Configuración" />
-        {openSection === "config" ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton> 
-
-      <Collapse in={openSection === "config"} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <MenuItemLink to="/sistema" primaryText="Sistemas" leftIcon={<StorageIcon />} />
-          <MenuItemLink to="/tipotrabajo" primaryText="Tipos de trabajo" leftIcon={<WorkIcon />} />
-        </List>
-      </Collapse>
+      {/* CONFIGURACIÓN — enlace único a /configuracion, la sub-navegación
+          (Sistemas, Tipos de trabajo, …) se muestra dentro de esa vista. */}
+      <List component="div" disablePadding>
+        <MenuItemLink
+          to="/configuracion"
+          primaryText={translate("menu.config")}
+          leftIcon={<SettingsIcon />}
+        />
+      </List>
 
       {/* ADMINISTRACIÓN */}
       <ListItemButton onClick={() => toggle("admin")}>
         <ListItemIcon>
           <AdminPanelSettingsIcon />
         </ListItemIcon>
-        <ListItemText primary="Administración" />
+        <ListItemText primary={translate("menu.admin")} />
         {openSection === "admin" ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
 
       <Collapse in={openSection === "admin"} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <MenuItemLink to="/users" primaryText="Agentes" leftIcon={<EngineeringIcon />} />
+          <MenuItemLink to="/users" primaryText={translate("menu.agents")} leftIcon={<EngineeringIcon />} />
         </List>
       </Collapse>
 
@@ -71,13 +65,13 @@ export const MyMenu = () => {
         <ListItemIcon>
           <BuildIcon />
         </ListItemIcon>
-        <ListItemText primary="Relaciones" />
+        <ListItemText primary={translate("menu.relations")} />
         {openSection === "crm" ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
 
       <Collapse in={openSection === "crm"} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <MenuItemLink to="/clientes" primaryText="Clientes" leftIcon={<PeopleIcon />} />
+          <MenuItemLink to="/clientes" primaryText={translate("menu.clients")} leftIcon={<PeopleIcon />} />
         </List>
       </Collapse>
 
@@ -86,13 +80,13 @@ export const MyMenu = () => {
         <ListItemIcon>
           <BuildIcon />
         </ListItemIcon>
-        <ListItemText primary="Producción" />
+        <ListItemText primary={translate("menu.production")} />
         {openSection === "produccion" ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
 
       <Collapse in={openSection === "produccion"} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <MenuItemLink to="/presupuesto" primaryText="Presupuestos" leftIcon={<DesignServicesIcon />} />
+          <MenuItemLink to="/presupuesto" primaryText={translate("menu.estimates")} leftIcon={<DesignServicesIcon />} />
         </List>
       </Collapse>
 
@@ -101,17 +95,17 @@ export const MyMenu = () => {
         <ListItemIcon>
           <StorageIcon />
         </ListItemIcon>
-        <ListItemText primary="Reportes" />
+        <ListItemText primary={translate("menu.reports")} />
         {openSection === "reportes" ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
 
       <Collapse in={openSection === "reportes"} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <MenuItemLink to="/reportes/diario" primaryText="Diario" />
-          <MenuItemLink to="/reportes/mensual" primaryText="Mensual" />
+          <MenuItemLink to="/reportes/diario" primaryText={translate("menu.daily")} />
+          <MenuItemLink to="/reportes/semanal" primaryText={translate("menu.weekly")} />
+          <MenuItemLink to="/reportes/mensual" primaryText={translate("menu.monthly")} />
         </List>
       </Collapse>
-
     </Menu>
   );
 };
