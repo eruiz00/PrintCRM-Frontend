@@ -56,7 +56,7 @@ export const MyMenu = () => {
 
       <Collapse in={openSection === "admin"} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <MenuItemLink to="/users" primaryText={translate("menu.agents")} leftIcon={<EngineeringIcon />} />
+          <MenuItemLink to="/empleado" primaryText={translate("menu.employees")} leftIcon={<EngineeringIcon />} />
         </List>
       </Collapse>
 
@@ -71,7 +71,7 @@ export const MyMenu = () => {
 
       <Collapse in={openSection === "crm"} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <MenuItemLink to="/clientes" primaryText={translate("menu.clients")} leftIcon={<PeopleIcon />} />
+          <MenuItemLink to="/cliente" primaryText={translate("menu.clients")} leftIcon={<PeopleIcon />} />
         </List>
       </Collapse>
 

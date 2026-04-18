@@ -5,7 +5,7 @@ import { useRecordContext, useTranslate } from "react-admin";
  * contra un diccionario `map` que devuelve CLAVES i18n, y las
  * traduce con el idioma activo.
  *
- * Se usa con TabbedCrudView/SimpleCrudView:
+ * Se usa con TabbedCrudView:
  *   { type: EnumField, props: { source: "estado", map: ESTADO_PRESUPUESTO_MAP, label: "..." } }
  */
 export const EnumField = (props: {

@@ -19,10 +19,6 @@ import { LineasPresupuesto } from "./LineasPresupuesto";
 
 /////////////////////////////////////////////////////////////
 // COLUMNS (lista)
-//
-// TabbedCrudView renderiza los columns como  <col.type {...col.props} />,
-// así que pasamos { type, props }.  Los labels son claves i18n y
-// react-admin los traduce automáticamente.
 export const presupuestoColumns = [
     { type: TextField, props: { source: "numpresupuesto", label: "presupuesto.fields.num_short" } },
     { type: DateField, props: { source: "fechaentrada", label: "presupuesto.fields.fechaentrada_short" } },
@@ -69,10 +65,6 @@ export const presupuestoColumns = [
 
 /////////////////////////////////////////////////////////////
 // FILTERS
-//
-// El treeqlDataProvider usa sufijos _xx de 2 letras como operador
-// (cs=contains -default-, eq, ge, le, gt, lt, bt, in, is).
-// `q` se traduce a ?search= (búsqueda libre global).
 export const presupuestoFilters = [
     <TextInput label="presupuesto.fields.busqueda" source="q" alwaysOn resettable />,
     <TextInput label="presupuesto.fields.numpresupuesto" source="numpresupuesto" alwaysOn resettable />,
@@ -112,94 +104,6 @@ export const presupuestoFilters = [
 ];
 
 /////////////////////////////////////////////////////////////
-// FORM (solo cabecera)
-export const presupuestoForm = [
-    <TextInput source="numpresupuesto" label="presupuesto.fields.numpresupuesto" data-colspan="3" />,
-    <DateInput source="fechaentrada" label="presupuesto.fields.fechaentrada" data-colspan="3" />,
-    <DateInput source="fechaconfeccion" label="presupuesto.fields.fechaconfeccion" data-colspan="3" />,
-    <DateInput source="fechasalida" label="presupuesto.fields.fechasalida" data-colspan="3" />,
-
-    <ReferenceInput source="clienteid" reference="cliente">
-        <AutocompleteInput
-            label="presupuesto.fields.clienteid"
-            optionText="empresa"
-            filterToQuery={(q: string) => ({ empresa: q })}
-            fullWidth
-        />
-    </ReferenceInput>,
-    <ReferenceInput source="contactoid" reference="contactocliente">
-        <AutocompleteInput
-            label="presupuesto.fields.contactoid"
-            optionText="nombre"
-            filterToQuery={(q: string) => ({ nombre: q })}
-            fullWidth
-        />
-    </ReferenceInput>,
-    <ReferenceInput source="comercialid" reference="comercial">
-        <AutocompleteInput
-            label="presupuesto.fields.comercialid"
-            optionText="nombre"
-            filterToQuery={(q: string) => ({ nombre: q })}
-            fullWidth
-        />
-    </ReferenceInput>,
-    <ReferenceInput source="atencionclienteid" reference="empleado">
-        <AutocompleteInput
-            label="presupuesto.fields.atencionclienteid"
-            optionText="nombre"
-            filterToQuery={(q: string) => ({ nombre: q })}
-            fullWidth
-        />
-    </ReferenceInput>,
-
-    <ReferenceInput source="tipotrabajo" reference="tipotrabajo">
-        <SelectInput label="presupuesto.fields.tipotrabajo" optionText="tipotrabajo" fullWidth />
-    </ReferenceInput>,
-    <TextInput source="referencia" label="presupuesto.fields.referencia" data-colspan="4" />,
-    <SelectInput
-        source="estado"
-        label="presupuesto.fields.estado"
-        choices={ESTADO_PRESUPUESTO_CHOICES}
-        data-colspan="4"
-        translateChoice
-    />,
-
-    <TextInput
-        source="ejemplares"
-        label="presupuesto.fields.ejemplares"
-        helperText="presupuesto.fields.ejemplares_help"
-        data-colspan="4"
-    />,
-    <DateInput
-        source="fechasolicitudentrega"
-        label="presupuesto.fields.fechasolicitudentrega"
-        data-colspan="4"
-    />,
-
-    <TextInput
-        source="descripcion"
-        label="presupuesto.fields.descripcion"
-        multiline
-        minRows={2}
-        data-colspan="12"
-    />,
-    <TextInput
-        source="descripcioncliente"
-        label="presupuesto.fields.descripcioncliente"
-        multiline
-        minRows={2}
-        data-colspan="12"
-    />,
-    <TextInput
-        source="nota"
-        label="presupuesto.fields.nota"
-        multiline
-        minRows={2}
-        data-colspan="12"
-    />,
-];
-
-/////////////////////////////////////////////////////////////
 // PAGE
 export const presupuestoPage = () => {
     const translate = useTranslate();
@@ -209,23 +113,130 @@ export const presupuestoPage = () => {
             title={translate("presupuesto.page_title")}
             columns={presupuestoColumns}
             filters={presupuestoFilters}
-            form={presupuestoForm}
-            tabs={[
+            formTabs={[
+                /* -------- CABECERA -------- */
+                {
+                    label: translate("presupuesto.tab_header"),
+                    fields: [
+                        <TextInput source="numpresupuesto" label="presupuesto.fields.numpresupuesto" data-colspan="3" />,
+                        <TextInput source="referencia" label="presupuesto.fields.referencia" data-colspan="5" />,
+                        <SelectInput
+                            source="estado"
+                            label="presupuesto.fields.estado"
+                            choices={ESTADO_PRESUPUESTO_CHOICES}
+                            data-colspan="4"
+                            translateChoice
+                        />,
+                        <DateInput source="fechaentrada" label="presupuesto.fields.fechaentrada" data-colspan="3" />,
+                        <DateInput source="fechaconfeccion" label="presupuesto.fields.fechaconfeccion" data-colspan="3" />,
+                        <DateInput source="fechasalida" label="presupuesto.fields.fechasalida" data-colspan="3" />,
+                        <DateInput
+                            source="fechasolicitudentrega"
+                            label="presupuesto.fields.fechasolicitudentrega"
+                            data-colspan="3"
+                        />,
+                    ],
+                },
+
+                /* -------- CLIENTE -------- */
+                {
+                    label: translate("presupuesto.tab_client"),
+                    fields: [
+                        <ReferenceInput source="clienteid" reference="cliente">
+                            <AutocompleteInput
+                                label="presupuesto.fields.clienteid"
+                                optionText="empresa"
+                                filterToQuery={(q: string) => ({ empresa: q })}
+                                fullWidth
+                                data-colspan="6"
+                            />
+                        </ReferenceInput>,
+                        <ReferenceInput source="contactoid" reference="contactocliente">
+                            <AutocompleteInput
+                                label="presupuesto.fields.contactoid"
+                                optionText="nombre"
+                                filterToQuery={(q: string) => ({ nombre: q })}
+                                fullWidth
+                                data-colspan="6"
+                            />
+                        </ReferenceInput>,
+                        <ReferenceInput source="comercialid" reference="comercial">
+                            <AutocompleteInput
+                                label="presupuesto.fields.comercialid"
+                                optionText="nombre"
+                                filterToQuery={(q: string) => ({ nombre: q })}
+                                fullWidth
+                                data-colspan="6"
+                            />
+                        </ReferenceInput>,
+                        <ReferenceInput source="atencionclienteid" reference="empleado">
+                            <AutocompleteInput
+                                label="presupuesto.fields.atencionclienteid"
+                                optionText="nombre"
+                                filterToQuery={(q: string) => ({ nombre: q })}
+                                fullWidth
+                                data-colspan="6"
+                            />
+                        </ReferenceInput>,
+                    ],
+                },
+
+                /* -------- TRABAJO -------- */
+                {
+                    label: translate("presupuesto.tab_work"),
+                    fields: [
+                        <ReferenceInput source="tipotrabajo" reference="tipotrabajo">
+                            <SelectInput
+                                label="presupuesto.fields.tipotrabajo"
+                                optionText="tipotrabajo"
+                                fullWidth
+                                data-colspan="6"
+                            />
+                        </ReferenceInput>,
+                        <TextInput
+                            source="ejemplares"
+                            label="presupuesto.fields.ejemplares"
+                            helperText="presupuesto.fields.ejemplares_help"
+                            data-colspan="6"
+                        />,
+                    ],
+                },
+
+                /* -------- NOTAS -------- */
+                {
+                    label: translate("presupuesto.tab_notes"),
+                    fields: [
+                        <TextInput
+                            source="descripcion"
+                            label="presupuesto.fields.descripcion"
+                            multiline
+                            minRows={2}
+                            data-colspan="12"
+                        />,
+                        <TextInput
+                            source="descripcioncliente"
+                            label="presupuesto.fields.descripcioncliente"
+                            multiline
+                            minRows={2}
+                            data-colspan="12"
+                        />,
+                        <TextInput
+                            source="nota"
+                            label="presupuesto.fields.nota"
+                            multiline
+                            minRows={2}
+                            data-colspan="12"
+                        />,
+                    ],
+                },
+
+                /* -------- LÍNEAS -------- */
                 {
                     label: translate("presupuesto.tab_lines"),
                     content: (record: any) =>
                         record?.id ? (
                             <LineasPresupuesto presupuestoId={record.id} />
                         ) : null,
-                },
-                {
-                    label: translate("presupuesto.tab_details"),
-                    content: (record: any) => (
-                        <div>
-                            <h3>{translate("presupuesto.details_header")}</h3>
-                            <pre>{JSON.stringify(record, null, 2)}</pre>
-                        </div>
-                    ),
                 },
             ]}
         />

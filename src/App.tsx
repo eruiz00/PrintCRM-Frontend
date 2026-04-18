@@ -8,6 +8,8 @@ import { authProvider } from "./providers/AuthProvider";
 import { presupuestoPage } from "./entitites/PresupuestoPage";
 import { sistemaPage as SistemaPage } from "./entitites/SistemaPage";
 import { tipoTrabajoPage as TipoTrabajoPage } from "./entitites/TipoTrabajos";
+import { empleadoPage } from "./entitites/EmpleadoPage";
+import { clientePage } from "./entitites/ClientePage";
 import { MyProfile } from "./layouts/MyProfile";
 import { ThemeName, themes } from "./themes/themes";
 import englishMessages from 'ra-language-english';
@@ -67,10 +69,10 @@ return (
     <Resource name="tipotrabajo" recordRepresentation="tipotrabajo" />
     <Resource name="tipotrabajoimagen" />
     <Resource name="tipotrabajopartetrabajo" />
-    <Resource name="cliente" recordRepresentation="empresa" />
+    <Resource name="cliente" list={clientePage} recordRepresentation="empresa" />
     <Resource name="comercial" recordRepresentation="nombre" />
     <Resource name="contactocliente" recordRepresentation="nombre" />
-    <Resource name="empleado" recordRepresentation="nombre" />
+    <Resource name="empleado" list={empleadoPage} recordRepresentation="nombre" />
     <Resource name="papel" recordRepresentation="papel" />
     <Resource name="grupopapel" recordRepresentation="nombregrupo" />
     <Resource name="gruposelecciontinta" recordRepresentation="grupo" />

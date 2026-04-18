@@ -169,7 +169,7 @@ export const SubCrudView = ({
        RENDER
        --------------------------------------------------------- */
     return (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 3, width: "100%" }}>
             {/* LISTA hija */}
             <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
                 {title && (
