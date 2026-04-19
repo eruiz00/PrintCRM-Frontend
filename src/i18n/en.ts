@@ -56,6 +56,20 @@ const en = {
         pick_section: "Pick a section from the panel on the left.",
         systems: "Systems",
         work_types: "Work types",
+        transport_zones: "Transport zones",
+    },
+
+    zonatransporte: {
+        page_title: "Transport zones",
+        tabs: {
+            general: "General",
+        },
+        fields: {
+            busqueda: "Search",
+            nombre: "Name",
+            pordefectoid: "Default service",
+            ignorarid: "Ignored service",
+        },
     },
 
     login: {
@@ -435,12 +449,18 @@ const en = {
             etiqueta: "Label",
         },
         estado_presupuesto: {
-            pendiente: "Pending",
+            no_definido: "Not defined",
+            elaboracion: "Drafting",
+            recepcion: "Received",
+            pendiente_informacion: "Awaiting info",
+            terminado: "Finished",
             enviado: "Sent",
             aceptado: "Accepted",
-            rechazado: "Rejected",
+            no_aceptado: "Not accepted",
+            ot_emitida: "Work order issued",
             anulado: "Voided",
-            cerrado: "Closed",
+            caducado: "Expired",
+            bloqueado: "Locked",
         },
         parte_trabajo: {
             no_definido: "Not defined",
@@ -510,6 +530,8 @@ const en = {
 
     linea: {
         list_title: "Estimate lines",
+        tab_general: "General",
+        tab_postimp: "Post-press",
         fields: {
             id: "Id",
             partetrabajo: "Work part",
@@ -547,6 +569,24 @@ const en = {
         orientacion: {
             vertical: "Portrait",
             horizontal: "Landscape",
+        },
+    },
+
+    lineapostimp: {
+        list_title: "Post-press steps",
+        fields: {
+            id: "Id",
+            postimpresionclase: "Post-press class",
+            conreserva: "Booked",
+            cobertura: "Coverage",
+            aplicacionesmodelo: "Applications / model",
+            ordenacion: "Sort order",
+            codigotroquel: "Die code",
+            referenciatroquel: "Die reference",
+            troquelenstock: "Die in stock",
+            quitarretal: "Strip offcuts",
+            omitirpreparacion: "Skip setup",
+            observaciones: "Notes",
         },
     },
 

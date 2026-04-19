@@ -11,15 +11,24 @@ export const TIPOLINEAS_CHOICES = [...TIPOLINEAS];
 
 /////////////////////////////////////////////////////////////
 // ESTADOS DE PRESUPUESTO
-// (presupuesto.estado es bigint; ajustar los ids cuando sepamos
-//  los valores reales que usa el backend)
+// Espejo del enum TSI RSConstDBEstadoPresupuesto:
+//   0 "No Definido", 1 Elaboración, 2 Recepción,
+//   3 "Pendiente Información", 4 Terminado, 5 Enviado,
+//   6 Aceptado, 7 "No Aceptado", 8 "O.T. Emitida",
+//   9 Anulado, 10 Caducado, 11 Bloqueado.
 export const ESTADO_PRESUPUESTO = [
-  { id: 0, name: "enums.estado_presupuesto.pendiente" },
-  { id: 1, name: "enums.estado_presupuesto.enviado" },
-  { id: 2, name: "enums.estado_presupuesto.aceptado" },
-  { id: 3, name: "enums.estado_presupuesto.rechazado" },
-  { id: 4, name: "enums.estado_presupuesto.anulado" },
-  { id: 5, name: "enums.estado_presupuesto.cerrado" },
+  { id: 0, name: "enums.estado_presupuesto.no_definido" },
+  { id: 1, name: "enums.estado_presupuesto.elaboracion" },
+  { id: 2, name: "enums.estado_presupuesto.recepcion" },
+  { id: 3, name: "enums.estado_presupuesto.pendiente_informacion" },
+  { id: 4, name: "enums.estado_presupuesto.terminado" },
+  { id: 5, name: "enums.estado_presupuesto.enviado" },
+  { id: 6, name: "enums.estado_presupuesto.aceptado" },
+  { id: 7, name: "enums.estado_presupuesto.no_aceptado" },
+  { id: 8, name: "enums.estado_presupuesto.ot_emitida" },
+  { id: 9, name: "enums.estado_presupuesto.anulado" },
+  { id: 10, name: "enums.estado_presupuesto.caducado" },
+  { id: 11, name: "enums.estado_presupuesto.bloqueado" },
 ] as const;
 export const ESTADO_PRESUPUESTO_CHOICES = [...ESTADO_PRESUPUESTO];
 
@@ -27,6 +36,26 @@ export const ESTADO_PRESUPUESTO_CHOICES = [...ESTADO_PRESUPUESTO];
 // useTranslate() para obtener el nombre en el idioma activo.
 export const ESTADO_PRESUPUESTO_MAP: Record<number, string> =
   Object.fromEntries(ESTADO_PRESUPUESTO.map((e) => [e.id, e.name]));
+
+/**
+ * Paleta de colores para el "chip" del estado del presupuesto.
+ * Los hex son legibles tanto sobre blanco como sobre oscuro gracias
+ * al texto contrastado que calcula EnumChipField.
+ */
+export const ESTADO_PRESUPUESTO_COLORS: Record<number, string> = {
+  0: "#9e9e9e",   // No definido  — gris
+  1: "#2196f3",   // Elaboración  — azul
+  2: "#03a9f4",   // Recepción    — azul claro
+  3: "#ff9800",   // Pendiente info — naranja
+  4: "#00bcd4",   // Terminado    — cian
+  5: "#673ab7",   // Enviado      — púrpura
+  6: "#4caf50",   // Aceptado     — verde
+  7: "#f44336",   // No aceptado  — rojo
+  8: "#009688",   // O.T. emitida — verde azulado
+  9: "#616161",   // Anulado      — gris oscuro
+  10: "#795548",  // Caducado     — marrón
+  11: "#212121",  // Bloqueado    — casi negro
+};
 
 /////////////////////////////////////////////////////////////
 // PARTE DE TRABAJO
@@ -134,3 +163,25 @@ export const AREA_EMPLEADO = [
 ] as const;
 export const AREA_EMPLEADO_MAP: Record<number, string> =
   Object.fromEntries(AREA_EMPLEADO.map((a) => [a.id, a.name]));
+
+/////////////////////////////////////////////////////////////
+// TIPO PROCESO PLANTA
+// Espejo parcial del enum TSI RSConstDBTipoProcesoPlanta.
+// Para "postimpresión" sólo interesan los valores 20-23:
+//    20 tppImpresionPostProceso
+//    21 tppPostImpGuillotinaPrep
+//    22 tppPostImpEnvioExterno
+//    23 tppPostImpProceso
+// Se usa para filtrar postimpresionclase en el sub-CRUD de
+// líneas de postimpresión de cada línea del presupuesto.
+export const TIPO_PROCESO_PLANTA_POSTIMP_IDS = [20, 21, 22, 23] as const;
+
+export const TIPO_PROCESO_PLANTA_POSTIMP = [
+  { id: 20, name: "enums.tipo_proceso_planta.impresion_post_proceso" },
+  { id: 21, name: "enums.tipo_proceso_planta.postimp_guillotina_prep" },
+  { id: 22, name: "enums.tipo_proceso_planta.postimp_envio_externo" },
+  { id: 23, name: "enums.tipo_proceso_planta.postimp_proceso" },
+] as const;
+
+export const TIPO_PROCESO_PLANTA_POSTIMP_MAP: Record<number, string> =
+  Object.fromEntries(TIPO_PROCESO_PLANTA_POSTIMP.map((t) => [t.id, t.name]));

@@ -102,7 +102,14 @@ export const TabbedCrudView = ({
                         setActiveTab(0);
                     },
                     onError: (error: any) => {
-                        notify(getErrorMessage(error), { type: "error" });
+                        const msg = getErrorMessage(error);
+                        // Usamos `_` como fallback de polyglot para que el
+                        // mensaje se muestre tal cual sin intentar traducirlo
+                        // (evita los warnings "Missing translation for key").
+                        notify(msg, {
+                            type: "error",
+                            messageArgs: { _: msg },
+                        });
                     },
                 }
             );
@@ -117,7 +124,14 @@ export const TabbedCrudView = ({
                         setActiveTab(0);
                     },
                     onError: (error: any) => {
-                        notify(getErrorMessage(error), { type: "error" });
+                        const msg = getErrorMessage(error);
+                        // Usamos `_` como fallback de polyglot para que el
+                        // mensaje se muestre tal cual sin intentar traducirlo
+                        // (evita los warnings "Missing translation for key").
+                        notify(msg, {
+                            type: "error",
+                            messageArgs: { _: msg },
+                        });
                     },
                 }
             );
@@ -140,7 +154,11 @@ export const TabbedCrudView = ({
                     setActiveTab(0);
                 },
                 onError: (error: any) => {
-                    notify(getErrorMessage(error), { type: "error" });
+                    const msg = getErrorMessage(error);
+                    notify(msg, {
+                        type: "error",
+                        messageArgs: { _: msg },
+                    });
                 },
             }
         );

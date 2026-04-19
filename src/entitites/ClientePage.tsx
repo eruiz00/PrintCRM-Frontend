@@ -16,8 +16,11 @@ import {
     useTranslate,
 } from "react-admin";
 import { TabbedCrudView } from "../views/TabbedCrudView";
-import { ESTADO_PRESUPUESTO_MAP } from "../common/constants";
-import { EnumField } from "../common/EnumField";
+import {
+    ESTADO_PRESUPUESTO_COLORS,
+    ESTADO_PRESUPUESTO_MAP,
+} from "../common/constants";
+import { EnumChipField } from "../common/EnumChipField";
 import { Box, Paper, Typography } from "@mui/material";
 
 /////////////////////////////////////////////////////////////
@@ -48,8 +51,6 @@ const PresupuestosDelCliente = ({ clienteId }: { clienteId: number | string }) =
                 <Datagrid bulkActionButtons={false} rowClick={false}>
                     <TextField source="numpresupuesto" label="presupuesto.fields.num_short" />
                     <DateField source="fechaentrada" label="presupuesto.fields.fechaentrada_short" />
-                    <DateField source="fechaconfeccion" label="presupuesto.fields.fechaconfeccion_short" />
-                    <DateField source="fechasalida" label="presupuesto.fields.fechasalida_short" />
                     <TextField source="referencia" label="presupuesto.fields.referencia" />
                     <TextField source="descripcion" label="presupuesto.fields.descripcion" />
                     <ReferenceField
@@ -64,10 +65,11 @@ const PresupuestosDelCliente = ({ clienteId }: { clienteId: number | string }) =
                         label="presupuesto.fields.tipotrabajo"
                         link={false}
                     />
-                    <EnumField
+                    <EnumChipField
                         source="estado"
                         label="presupuesto.fields.estado"
                         map={ESTADO_PRESUPUESTO_MAP}
+                        colorMap={ESTADO_PRESUPUESTO_COLORS}
                     />
                 </Datagrid>
             </List>
@@ -98,6 +100,7 @@ export const clienteColumns = [
             reference: "comercial",
             label: "cliente.fields.comercialid",
             link: false,
+            children: <TextField source="nombre" />,
         },
     },
     { type: BooleanField, props: { source: "denegado", label: "cliente.fields.denegado" } },
@@ -194,7 +197,15 @@ export const clientePage = () => {
                         <TextInput source="localidad" label="cliente.fields.localidad" data-colspan="4" />,
                         <TextInput source="provincia" label="cliente.fields.provincia" data-colspan="4" />,
                         <TextInput source="pais" label="cliente.fields.pais" data-colspan="4" />,
-                        <NumberInput source="zonatransporteid" label="cliente.fields.zonatransporteid" data-colspan="4" />,
+                        <ReferenceInput source="zonatransporteid" reference="zonatransporte">
+                            <AutocompleteInput
+                                label="cliente.fields.zonatransporteid"
+                                optionText="nombre"
+                                filterToQuery={(q: string) => ({ nombre: q })}
+                                fullWidth
+                                data-colspan="4"
+                            />
+                        </ReferenceInput>,
                         <TextInput source="notadireccion" label="cliente.fields.notadireccion" multiline minRows={2} data-colspan="12" />,
                     ],
                 },
@@ -208,9 +219,15 @@ export const clientePage = () => {
                         <TextInput source="localidadb" label="cliente.fields.localidad" data-colspan="4" />,
                         <TextInput source="provinciab" label="cliente.fields.provincia" data-colspan="4" />,
                         <TextInput source="paisb" label="cliente.fields.pais" data-colspan="4" />,
-                        <NumberInput source="zonatransportebid" label="cliente.fields.zonatransporteid" data-colspan="4" />,
-                        <TextInput source="zonatransporteb" label="cliente.fields.zonatransporte" data-colspan="4" />,
-                        <Spacer colspan={4} />,
+                        <ReferenceInput source="zonatransportebid" reference="zonatransporte">
+                            <AutocompleteInput
+                                label="cliente.fields.zonatransporteid"
+                                optionText="nombre"
+                                filterToQuery={(q: string) => ({ nombre: q })}
+                                fullWidth
+                                data-colspan="4"
+                            />
+                        </ReferenceInput>,
                         <TextInput source="notadireccionb" label="cliente.fields.notadireccion" multiline minRows={2} data-colspan="12" />,
                     ],
                 },
