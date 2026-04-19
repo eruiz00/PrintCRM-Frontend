@@ -18,6 +18,7 @@ import {
 } from "../common/constants";
 import { EnumField } from "../common/EnumField";
 import { PapelSelector } from "../common/PapelSelector";
+import { LineasPostimpresion } from "./LineasPostimpresion";
 
 /////////////////////////////////////////////////////////////
 // Input para gruposelecciontinta*.
@@ -231,6 +232,20 @@ export const LineasPresupuesto = ({
     presupuestoId: number | string;
 }) => {
     const translate = useTranslate();
+
+    const formTabs = [
+        {
+            label: translate("linea.tab_general"),
+            fields: form,
+        },
+        {
+            label: translate("linea.tab_postimp"),
+            content: (lineaRecord: any) => (
+                <LineasPostimpresion lineaId={lineaRecord.id} />
+            ),
+        },
+    ];
+
     return (
         <SubCrudView
             resource="lineapresrecogidadatos"
@@ -238,7 +253,7 @@ export const LineasPresupuesto = ({
             parentId={presupuestoId}
             title={translate("linea.list_title")}
             columns={columns}
-            form={form}
+            formTabs={formTabs}
         />
     );
 };

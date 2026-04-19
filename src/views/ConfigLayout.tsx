@@ -13,6 +13,7 @@ import {
 import SettingsIcon from "@mui/icons-material/Settings";
 import StorageIcon from "@mui/icons-material/Storage";
 import WorkIcon from "@mui/icons-material/Work";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
 /**
  * Enlaces del panel lateral de configuración.
@@ -28,6 +29,7 @@ type ConfigLink = {
 const CONFIG_LINKS: ConfigLink[] = [
     { to: "sistema", labelKey: "config.systems", icon: <StorageIcon /> },
     { to: "tipotrabajo", labelKey: "config.work_types", icon: <WorkIcon /> },
+    { to: "zonatransporte", labelKey: "config.transport_zones", icon: <LocalShippingIcon /> },
 ];
 
 /**

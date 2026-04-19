@@ -56,6 +56,20 @@ const es = {
         pick_section: "Selecciona una sección en el panel de la izquierda.",
         systems: "Sistemas",
         work_types: "Tipos de trabajo",
+        transport_zones: "Zonas de transporte",
+    },
+
+    zonatransporte: {
+        page_title: "Zonas de transporte",
+        tabs: {
+            general: "General",
+        },
+        fields: {
+            busqueda: "Búsqueda",
+            nombre: "Nombre",
+            pordefectoid: "Servicio por defecto",
+            ignorarid: "Servicio a ignorar",
+        },
     },
 
     login: {
@@ -435,12 +449,18 @@ const es = {
             etiqueta: "Etiqueta",
         },
         estado_presupuesto: {
-            pendiente: "Pendiente",
+            no_definido: "No definido",
+            elaboracion: "Elaboración",
+            recepcion: "Recepción",
+            pendiente_informacion: "Pendiente información",
+            terminado: "Terminado",
             enviado: "Enviado",
             aceptado: "Aceptado",
-            rechazado: "Rechazado",
+            no_aceptado: "No aceptado",
+            ot_emitida: "O.T. emitida",
             anulado: "Anulado",
-            cerrado: "Cerrado",
+            caducado: "Caducado",
+            bloqueado: "Bloqueado",
         },
         parte_trabajo: {
             no_definido: "No definido",
@@ -510,6 +530,8 @@ const es = {
 
     linea: {
         list_title: "Líneas del presupuesto",
+        tab_general: "General",
+        tab_postimp: "Postimpresión",
         fields: {
             id: "Id",
             partetrabajo: "Parte trabajo",
@@ -547,6 +569,24 @@ const es = {
         orientacion: {
             vertical: "Vertical",
             horizontal: "Horizontal",
+        },
+    },
+
+    lineapostimp: {
+        list_title: "Líneas de postimpresión",
+        fields: {
+            id: "Id",
+            postimpresionclase: "Clase postimpresión",
+            conreserva: "Con reserva",
+            cobertura: "Cobertura",
+            aplicacionesmodelo: "Aplicaciones / modelo",
+            ordenacion: "Ordenación",
+            codigotroquel: "Código troquel",
+            referenciatroquel: "Referencia troquel",
+            troquelenstock: "Troquel en stock",
+            quitarretal: "Quitar retal",
+            omitirpreparacion: "Omitir preparación",
+            observaciones: "Observaciones",
         },
     },
 

@@ -8,6 +8,7 @@ import { authProvider } from "./providers/AuthProvider";
 import { presupuestoPage } from "./entitites/PresupuestoPage";
 import { sistemaPage as SistemaPage } from "./entitites/SistemaPage";
 import { tipoTrabajoPage as TipoTrabajoPage } from "./entitites/TipoTrabajos";
+import { zonaTransportePage as ZonaTransportePage } from "./entitites/ZonaTransportePage";
 import { empleadoPage } from "./entitites/EmpleadoPage";
 import { clientePage } from "./entitites/ClientePage";
 import { MyProfile } from "./layouts/MyProfile";
@@ -18,13 +19,39 @@ import { CustomLoginPage } from './views/LoginPage';
 import { ConfigLayout, ConfigIndex } from "./views/ConfigLayout";
 import esApp from "./i18n/es";
 import enApp from "./i18n/en";
+import raEs from "./i18n/raEs";
 
+/**
+ * Deep-merge sólo a un nivel del namespace `ra:` para que las claves
+ * modernas de react-admin 5.x (clear_input_value, page.empty, page.invite,
+ * access_denied, select_columns, …) que faltan en `ra-language-spanish` v1
+ * se rellenen desde `raEs`. El resto del árbol de mensajes se fusiona a
+ * nivel superior.
+ */
+const mergeMessages = (base: any, ...overrides: any[]) => {
+    const out: any = { ...base };
+    const mergedRa: any = { ...(base?.ra ?? {}) };
+
+    for (const o of overrides) {
+        if (o?.ra) {
+            for (const section of Object.keys(o.ra)) {
+                mergedRa[section] = {
+                    ...(mergedRa[section] ?? {}),
+                    ...(o.ra[section] ?? {}),
+                };
+            }
+        }
+        Object.assign(out, o);
+    }
+    out.ra = mergedRa;
+    return out;
+};
 
 const i18nProvider = polyglotI18nProvider(
     locale => {
         return (locale === 'es')
-            ? { ...spanishMessages, ...esApp }
-            : { ...englishMessages, ...enApp };
+            ? mergeMessages(spanishMessages, raEs, esApp)
+            : mergeMessages(englishMessages, enApp);
     },
     'es',
     [
@@ -76,6 +103,12 @@ return (
     <Resource name="papel" recordRepresentation="papel" />
     <Resource name="grupopapel" recordRepresentation="nombregrupo" />
     <Resource name="gruposelecciontinta" recordRepresentation="grupo" />
+    <Resource name="zonatransporte" recordRepresentation="nombre" />
+    <Resource name="serviciotransporte" recordRepresentation="nombre" />
+
+    {/* Sub-CRUD de postimpresión (dentro de cada línea de presupuesto) */}
+    <Resource name="postimpresionclase" recordRepresentation="nombre" />
+    <Resource name="lineapresrecogidapostimp" />
 
     {/* Rutas personalizadas: /configuracion con sub-navegación */}
     <CustomRoutes>
@@ -83,6 +116,7 @@ return (
             <Route index element={<ConfigIndex />} />
             <Route path="sistema" element={<SistemaPage />} />
             <Route path="tipotrabajo" element={<TipoTrabajoPage />} />
+            <Route path="zonatransporte" element={<ZonaTransportePage />} />
         </Route>
     </CustomRoutes>
     </Admin>

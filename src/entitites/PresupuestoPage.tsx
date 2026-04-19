@@ -12,9 +12,10 @@ import {
 import { TabbedCrudView } from "../views/TabbedCrudView";
 import {
     ESTADO_PRESUPUESTO_CHOICES,
+    ESTADO_PRESUPUESTO_COLORS,
     ESTADO_PRESUPUESTO_MAP,
 } from "../common/constants";
-import { EnumField } from "../common/EnumField";
+import { EnumChipField } from "../common/EnumChipField";
 import { LineasPresupuesto } from "./LineasPresupuesto";
 
 /////////////////////////////////////////////////////////////
@@ -22,8 +23,6 @@ import { LineasPresupuesto } from "./LineasPresupuesto";
 export const presupuestoColumns = [
     { type: TextField, props: { source: "numpresupuesto", label: "presupuesto.fields.num_short" } },
     { type: DateField, props: { source: "fechaentrada", label: "presupuesto.fields.fechaentrada_short" } },
-    { type: DateField, props: { source: "fechaconfeccion", label: "presupuesto.fields.fechaconfeccion_short" } },
-    { type: DateField, props: { source: "fechasalida", label: "presupuesto.fields.fechasalida_short" } },
     {
         type: ReferenceField,
         props: {
@@ -31,6 +30,7 @@ export const presupuestoColumns = [
             reference: "cliente",
             label: "presupuesto.fields.clienteid",
             link: false,
+            children: <TextField source="empresa" />,
         },
     },
     {
@@ -40,16 +40,18 @@ export const presupuestoColumns = [
             reference: "comercial",
             label: "presupuesto.fields.comercialid",
             link: false,
+            children: <TextField source="nombre" />,
         },
     },
     { type: TextField, props: { source: "descripcion", label: "presupuesto.fields.descripcion" } },
     { type: TextField, props: { source: "referencia", label: "presupuesto.fields.referencia" } },
     {
-        type: EnumField,
+        type: EnumChipField,
         props: {
             source: "estado",
             label: "presupuesto.fields.estado",
             map: ESTADO_PRESUPUESTO_MAP,
+            colorMap: ESTADO_PRESUPUESTO_COLORS,
         },
     },
     {
@@ -59,6 +61,7 @@ export const presupuestoColumns = [
             reference: "tipotrabajo",
             label: "presupuesto.fields.tipotrabajo",
             link: false,
+            children: <TextField source="tipotrabajo" />,
         },
     },
 ];
