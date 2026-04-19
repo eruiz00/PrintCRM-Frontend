@@ -1,8 +1,6 @@
 import {
     TextField,
-    BooleanField,
     DateField,
-    NumberField,
     ReferenceField,
     List,
     Datagrid,
@@ -17,6 +15,7 @@ import {
 } from "react-admin";
 import { TabbedCrudView } from "../views/TabbedCrudView";
 import {
+    ESTADO_PRESUPUESTO_CHOICES,
     ESTADO_PRESUPUESTO_COLORS,
     ESTADO_PRESUPUESTO_MAP,
 } from "../common/constants";
@@ -30,6 +29,61 @@ import { Box, Paper, Typography } from "@mui/material";
 // `clienteid` coincide con el cliente seleccionado.
 // Reutiliza las columnas básicas que usa PresupuestoPage
 // pero sin edición dentro de esta pestaña.
+// Filtros de presupuestos dentro de la pestaña del cliente.
+// Reutiliza los mismos filtros que PresupuestoPage excepto `clienteid_eq`,
+// porque la lista ya está forzada al cliente seleccionado.
+const presupuestosDelClienteFilters = [
+    <TextInput label="presupuesto.fields.busqueda" source="q" alwaysOn resettable />,
+    <TextInput
+        label="presupuesto.fields.numpresupuesto"
+        source="numpresupuesto"
+        alwaysOn
+        resettable
+    />,
+    <TextInput
+        label="presupuesto.fields.referencia"
+        source="referencia"
+        alwaysOn
+        resettable
+    />,
+
+    <ReferenceInput source="comercialid_eq" reference="comercial" alwaysOn>
+        <AutocompleteInput
+            label="presupuesto.fields.comercialid"
+            optionText="nombre"
+            filterToQuery={(q: string) => ({ nombre: q })}
+        />
+    </ReferenceInput>,
+
+    <DateInput
+        source="fechaentrada_ge"
+        label="presupuesto.fields.entrada_desde"
+        alwaysOn
+    />,
+    <DateInput
+        source="fechaentrada_le"
+        label="presupuesto.fields.entrada_hasta"
+        alwaysOn
+    />,
+
+    <SelectInput
+        source="estado_eq"
+        label="presupuesto.fields.estado"
+        choices={ESTADO_PRESUPUESTO_CHOICES}
+        alwaysOn
+        resettable
+        translateChoice
+    />,
+
+    <ReferenceInput source="tipotrabajo_eq" reference="tipotrabajo" alwaysOn>
+        <SelectInput
+            label="presupuesto.fields.tipotrabajo"
+            optionText="tipotrabajo"
+            resettable
+        />
+    </ReferenceInput>,
+];
+
 const PresupuestosDelCliente = ({ clienteId }: { clienteId: number | string }) => {
     const translate = useTranslate();
     return (
@@ -41,6 +95,7 @@ const PresupuestosDelCliente = ({ clienteId }: { clienteId: number | string }) =
             <List
                 resource="presupuesto"
                 filter={{ clienteid_eq: clienteId }}
+                filters={presupuestosDelClienteFilters}
                 actions={false}
                 disableSyncWithLocation
                 exporter={false}
@@ -103,10 +158,7 @@ export const clienteColumns = [
             children: <TextField source="nombre" />,
         },
     },
-    { type: BooleanField, props: { source: "denegado", label: "cliente.fields.denegado" } },
-    { type: BooleanField, props: { source: "marketing", label: "cliente.fields.marketing" } },
     { type: DateField, props: { source: "fechaalta", label: "cliente.fields.fechaalta" } },
-    { type: NumberField, props: { source: "retencion", label: "cliente.fields.retencion" } },
 ];
 
 /////////////////////////////////////////////////////////////
